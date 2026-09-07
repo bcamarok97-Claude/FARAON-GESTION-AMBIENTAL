@@ -668,4 +668,52 @@ footer p {
   .contact-grid {
     grid-template-columns: 1fr;
   }
+  .whatsapp-float {
+    right: 16px;
+    bottom: 16px;
+    width: 52px;
+    height: 52px;
+  }
+}
+
+/* ---- Botón flotante de WhatsApp ---- */
+.whatsapp-float {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 90;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent-light), var(--accent));
+  color: #08130a;
+  box-shadow: 0 10px 28px -6px rgba(63, 164, 70, 0.65);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease;
+}
+.whatsapp-float::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent-light);
+  opacity: 0.55;
+  animation: whatsappPulse 2.4s ease-out infinite;
+  z-index: -1;
+}
+.whatsapp-float:hover {
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 16px 34px -6px rgba(63, 164, 70, 0.8);
+}
+@keyframes whatsappPulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-float::before {
+    animation: none;
+    display: none;
+  }
 }
