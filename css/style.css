@@ -679,41 +679,100 @@ footer p {
 /* ---- Botón flotante de WhatsApp ---- */
 .whatsapp-float {
   position: fixed;
-  right: 26px;
-  bottom: 26px;
+  right: 28px;
+  bottom: 28px;
   z-index: 90;
-  width: 60px;
-  height: 60px;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* pulsos tipo radar, escalonados */
+.wa-pulse {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-light);
+  opacity: 0;
+  animation: waPulseRing 3s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+.wa-pulse-2 {
+  animation-delay: 1.5s;
+}
+
+/* anillo con degradé cónico girando */
+.wa-ring {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  z-index: 1;
+  background: conic-gradient(from 0deg, var(--accent-dark), var(--accent-light), var(--accent), var(--accent-dark));
+  animation: waRingSpin 5s linear infinite;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2.5px));
+}
+
+/* núcleo del botón: degradé radial glossy + sombras internas para dar profundidad */
+.wa-core {
+  position: relative;
+  z-index: 2;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--accent-light), var(--accent));
   color: #08130a;
-  box-shadow: 0 10px 28px -6px rgba(63, 164, 70, 0.65);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease;
+  background: radial-gradient(circle at 34% 26%, #e9fccd, var(--accent-light) 42%, var(--accent) 76%, var(--accent-dark) 100%);
+  box-shadow:
+    0 12px 26px -6px rgba(8, 26, 12, 0.55),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.55),
+    inset 0 -7px 10px rgba(8, 19, 10, 0.4);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease;
 }
-.whatsapp-float::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--accent-light);
-  opacity: 0.55;
-  animation: whatsappPulse 2.4s ease-out infinite;
-  z-index: -1;
+.wa-core svg {
+  filter: drop-shadow(0 1px 1px rgba(8, 19, 10, 0.25));
+  transform: translateY(-1px);
 }
-.whatsapp-float:hover {
-  transform: translateY(-3px) scale(1.06);
-  box-shadow: 0 16px 34px -6px rgba(63, 164, 70, 0.8);
+.whatsapp-float:hover .wa-core {
+  transform: scale(1.08);
+  box-shadow:
+    0 16px 32px -6px rgba(8, 26, 12, 0.65),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.6),
+    inset 0 -7px 10px rgba(8, 19, 10, 0.4);
 }
-@keyframes whatsappPulse {
-  0% { transform: scale(1); opacity: 0.5; }
-  100% { transform: scale(1.7); opacity: 0; }
+.whatsapp-float:active .wa-core {
+  transform: scale(0.96);
 }
+
+@keyframes waPulseRing {
+  0% { transform: scale(0.82); opacity: 0.7; }
+  75% { opacity: 0; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+@keyframes waRingSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 860px) {
+  .whatsapp-float {
+    right: 18px;
+    bottom: 18px;
+    width: 58px;
+    height: 58px;
+  }
+  .wa-core {
+    width: 46px;
+    height: 46px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .whatsapp-float::before {
+  .wa-pulse,
+  .wa-ring {
     animation: none;
-    display: none;
+    opacity: 0;
   }
 }
