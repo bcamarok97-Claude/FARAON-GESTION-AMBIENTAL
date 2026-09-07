@@ -8,8 +8,9 @@
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600,700&display=swap" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css?v=4" />
 </head>
 <body>
 
@@ -33,117 +34,130 @@
 </header>
 
 <section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="container">
-    <div>
-      <div class="eyebrow">Monte Grande · Buenos Aires</div>
-      <h1>Gestión ambiental<br /><span>de punta a punta.</span></h1>
-      <p class="lead">Recolección de residuos, equipos compactadores, contenedores roll off, volquetes y poda de espacios verdes. Cuidamos hoy, pensando en el mañana.</p>
-      <div class="hero-actions">
-        <a href="contacto.html" class="btn btn-primary">Pedir presupuesto</a>
-        <a href="servicios.html" class="btn btn-ghost">Ver servicios</a>
+  <div class="hero-scene">
+    <div class="hero-scene-bg"></div>
+    <div class="hero-scene-world" id="heroSceneWorld">
+      <div class="hero-scene-layer layer-far">
+        <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMax slice">
+          <circle cx="600" cy="40" r="230" fill="var(--accent-soft)" />
+          <g fill="var(--accent-dark)">
+            <ellipse cx="70" cy="565" rx="165" ry="120" />
+            <ellipse cx="260" cy="520" rx="195" ry="150" />
+            <ellipse cx="490" cy="560" rx="175" ry="130" />
+            <ellipse cx="710" cy="525" rx="205" ry="155" />
+            <ellipse cx="940" cy="560" rx="185" ry="130" />
+            <ellipse cx="1140" cy="535" rx="175" ry="145" />
+          </g>
+        </svg>
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat"><div class="num">8–18</div><div class="label">Hs de atención</div></div>
-        <div class="hero-stat"><div class="num">6</div><div class="label">Líneas de servicio</div></div>
-        <div class="hero-stat"><div class="num">100%</div><div class="label">Flota propia</div></div>
+      <div class="hero-scene-layer layer-mid">
+        <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMax slice">
+          <g>
+            <rect x="118" y="430" width="26" height="185" rx="8" fill="var(--accent-dark)" />
+            <circle cx="131" cy="355" r="122" fill="var(--accent)" />
+            <circle cx="58" cy="405" r="92" fill="var(--accent-dark)" />
+            <circle cx="207" cy="398" r="97" fill="var(--accent-dark)" />
+          </g>
+          <g>
+            <rect x="1040" y="440" width="24" height="175" rx="8" fill="var(--accent-dark)" />
+            <circle cx="1052" cy="365" r="118" fill="var(--accent)" />
+            <circle cx="983" cy="412" r="87" fill="var(--accent-dark)" />
+            <circle cx="1122" cy="402" r="92" fill="var(--accent-dark)" />
+          </g>
+        </svg>
+      </div>
+      <div class="hero-scene-layer layer-near">
+        <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMax slice">
+          <g stroke="var(--accent-dark)" stroke-width="10" fill="none" stroke-linecap="round">
+            <path d="M-20 -10 C 60 40, 90 90, 70 175" />
+            <path d="M1220 712 C 1140 662, 1108 612, 1132 528" />
+          </g>
+          <g fill="var(--accent-light)">
+            <ellipse cx="52" cy="52" rx="32" ry="17" transform="rotate(-32 52 52)" />
+            <ellipse cx="80" cy="100" rx="30" ry="16" transform="rotate(-8 80 100)" />
+            <ellipse cx="70" cy="153" rx="27" ry="15" transform="rotate(22 70 153)" />
+            <ellipse cx="1148" cy="658" rx="32" ry="17" transform="rotate(28 1148 658)" />
+            <ellipse cx="1120" cy="602" rx="30" ry="16" transform="rotate(8 1120 602)" />
+            <ellipse cx="1130" cy="548" rx="27" ry="15" transform="rotate(-22 1130 548)" />
+          </g>
+        </svg>
       </div>
     </div>
-    <div class="hero-art">
-      <svg viewBox="0 0 390 480" fill="none">
-        <ellipse cx="150" cy="270" rx="140" ry="205" stroke="#29332d" stroke-width="1" stroke-dasharray="3 6" />
-
-        <!-- aves (motivo del isotipo) -->
-        <g class="bird-float" style="animation-delay:0s;">
-          <path d="M40 44 l9 -7 l9 7" fill="none" stroke="#7CB342" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        <g class="bird-float" style="animation-delay:1.2s;">
-          <path d="M64 30 l7 -5.5 l7 5.5" fill="none" stroke="#7CB342" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-
-        <!-- isotipo reciclaje girando -->
-        <g class="recycle-spin">
-          <g transform="translate(256,58)">
-            <g transform="rotate(0)"><path d="M0,-22 L7,-10 L-2,-10 Z" fill="#7CB342"/><path d="M0,-22 L0,-6" stroke="#7CB342" stroke-width="4" stroke-linecap="round"/></g>
-            <g transform="rotate(120)"><path d="M0,-22 L7,-10 L-2,-10 Z" fill="#2E7D32"/><path d="M0,-22 L0,-6" stroke="#2E7D32" stroke-width="4" stroke-linecap="round"/></g>
-            <g transform="rotate(240)"><path d="M0,-22 L7,-10 L-2,-10 Z" fill="#0E3B2E"/><path d="M0,-22 L0,-6" stroke="#0E3B2E" stroke-width="4" stroke-linecap="round"/></g>
-          </g>
-        </g>
-
-        <!-- camión compactador (fijo) -->
-        <g>
-          <rect x="20" y="250" width="75" height="95" rx="8" fill="#171e1a" stroke="#3a463e" stroke-width="2"/>
-          <rect x="30" y="262" width="34" height="26" rx="3" fill="#0e3b2e" stroke="#7CB342" stroke-width="1.5"/>
-          <rect x="95" y="230" width="120" height="115" rx="10" fill="#1e2622" stroke="#2E7D32" stroke-width="2.5"/>
-          <line x1="95" y1="252" x2="215" y2="252" stroke="#3a463e" stroke-width="1"/>
-          <line x1="120" y1="266" x2="120" y2="332" stroke="#3a463e" stroke-width="1"/>
-          <line x1="150" y1="266" x2="150" y2="332" stroke="#3a463e" stroke-width="1"/>
-          <line x1="180" y1="266" x2="180" y2="332" stroke="#3a463e" stroke-width="1"/>
-          <circle cx="65" cy="356" r="24" fill="#171e1a" stroke="#3a463e" stroke-width="3"/>
-          <circle cx="65" cy="356" r="7" fill="#3a463e"/>
-          <circle cx="175" cy="356" r="24" fill="#171e1a" stroke="#3a463e" stroke-width="3"/>
-          <circle cx="175" cy="356" r="7" fill="#3a463e"/>
-        </g>
-
-        <!-- brazo + contenedor (se levanta y vuelca) -->
-        <g class="bin-lift">
-          <rect x="207" y="230" width="16" height="150" rx="6" fill="#1e2622" stroke="#2E7D32" stroke-width="2"/>
-          <rect x="215" y="308" width="70" height="72" rx="8" fill="#0e3b2e" stroke="#7CB342" stroke-width="2.5"/>
-          <line x1="215" y1="322" x2="285" y2="322" stroke="#2E7D32" stroke-width="2"/>
-          <path d="M232 340 L242 350 L232 360" fill="none" stroke="#7CB342" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M268 340 L258 350 L268 360" fill="none" stroke="#7CB342" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-      </svg>
+    <div class="leaves-layer" id="leavesLayer"></div>
+    <div class="birds-layer">
+      <div class="bird" style="--flight-path: path('M -60 160 C 300 70, 620 220, 1020 100 S 1360 60, 1560 130'); --flight-duration: 19s; --flight-delay: 0s;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 12c4-6 8-6 10-2 2-4 6-4 10 2-4-2-7-1-10 3-3-4-6-5-10-3Z" /></svg>
+      </div>
+      <div class="bird" style="--flight-path: path('M -70 300 C 260 230, 560 360, 960 250 S 1340 300, 1540 230'); --flight-duration: 23s; --flight-delay: 5s;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 12c4-6 8-6 10-2 2-4 6-4 10 2-4-2-7-1-10 3-3-4-6-5-10-3Z" /></svg>
+      </div>
+      <div class="bird" style="--flight-path: path('M -50 90 C 300 150, 660 20, 1020 140 S 1360 70, 1540 150'); --flight-duration: 21s; --flight-delay: 11s;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 12c4-6 8-6 10-2 2-4 6-4 10 2-4-2-7-1-10 3-3-4-6-5-10-3Z" /></svg>
+      </div>
+    </div>
+    <div class="hero-scene-vignette"></div>
+  </div>
+  <div class="container">
+    <div class="pill-badge hero-enter" style="animation-delay:.05s"><span class="dot"></span>Gestión ambiental integral</div>
+    <h1 class="hero-enter" style="animation-delay:.16s">Cuidamos hoy,<br /><span>pensando en el mañana.</span></h1>
+    <p class="lead hero-enter" style="animation-delay:.27s">Recolección de residuos, equipos compactadores, contenedores roll off, volquetes y poda de espacios verdes en Monte Grande.</p>
+    <div class="hero-actions hero-enter" style="animation-delay:.38s">
+      <a href="contacto.html" class="btn btn-primary">↗ Pedir presupuesto</a>
+      <a href="servicios.html" class="btn btn-ghost">Ver servicios</a>
+    </div>
+    <div class="hero-stats hero-enter" style="animation-delay:.49s">
+      <div class="hero-stat"><div class="num">8–18</div><div class="label">Hs de atención</div></div>
+      <div class="hero-stat"><div class="num">6</div><div class="label">Líneas de servicio</div></div>
+      <div class="hero-stat"><div class="num">100%</div><div class="label">Flota propia</div></div>
     </div>
   </div>
 </section>
 
 <section>
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="eyebrow">Qué hacemos</div>
       <h2>Gestión de residuos integral</h2>
     </div>
     <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>
+      <div class="service-card reveal">
+        <div class="icon-badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M9 2h6a1 1 0 0 1 1 1v1h3a1 1 0 1 1 0 2h-.6l-1.1 13.2A2 2 0 0 1 15.3 21H8.7a2 2 0 0 1-2-1.8L5.6 6H5a1 1 0 1 1 0-2h3V3a1 1 0 0 1 1-1Z"/><path d="M9 9v9M12 9v9M15 9v9" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round"/></svg>
         </div>
         <h3>Recolección de residuos</h3>
         <p>Recolección urbana diaria o programada, adaptada a la frecuencia que necesita tu barrio, edificio o industria.</p>
       </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h13v13H1z"/><path d="M14 8h4l4 4v4h-8V8Z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+      <div class="service-card reveal">
+        <div class="icon-badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M2 6a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v8h1.2l2.3-3.3A1 1 0 0 1 17.3 10H20a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a2.5 2.5 0 1 1-4.9.5H9.9a2.5 2.5 0 1 1-4.95-.5H3a1 1 0 0 1-1-1Z"/><circle cx="7.5" cy="17.5" r="1.7" fill="rgba(8,19,10,.5)"/><circle cx="17" cy="17.5" r="1.7" fill="rgba(8,19,10,.5)"/></svg>
         </div>
         <h3>Equipos compactadores</h3>
         <p>Flota de camiones compactadores para grandes volúmenes de residuos, con recorridos optimizados.</p>
       </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="10" rx="1"/><path d="M7 8V5h10v3"/></svg>
+      <div class="service-card reveal">
+        <div class="icon-badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M3 8h18l-1.4 11.2A2 2 0 0 1 17.6 21H6.4a2 2 0 0 1-2-1.8L3 8Z"/><path d="M2 8h20" stroke="rgba(8,19,10,.4)" stroke-width="1.6"/><path d="M6 6l1-2h10l1 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3>Contenedores Roll Off</h3>
         <p>Contenedores de gran volumen para obra, industria y eventos, con retiro y colocación programados.</p>
       </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="8" height="6" rx="1"/><rect x="10" y="10.5" width="8" height="3" rx="0.5"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+      <div class="service-card reveal">
+        <div class="icon-badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9h18l-1.5 9.4A2 2 0 0 1 17.5 20h-11a2 2 0 0 1-2-1.6L3 9Z"/><path d="M2 9h20" stroke="rgba(8,19,10,.4)" stroke-width="1.6"/><path d="M18 4l3 2.2-1.6 2.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 4v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         </div>
         <h3>Volquetes</h3>
         <p>Alquiler y servicio de volquetes para escombros y residuos voluminosos de obra o mudanza.</p>
       </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V10"/><path d="M12 10C12 6 9 4 6 4c0 4 2 6 6 6Z"/><path d="M12 10c0-4 3-6 6-6 0 4-2 6-6 6Z"/></svg>
+      <div class="service-card reveal">
+        <div class="icon-badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16Z"/><path d="M7 17 17 7" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
         </div>
         <h3>Poda y espacios verdes</h3>
         <p>Poda de árboles y mantenimiento de espacios verdes, con retiro incluido de los residuos generados.</p>
       </div>
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/></svg>
+      <div class="service-card reveal">
+        <div class="icon-badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><rect x="10" y="2" width="4" height="4" rx="1"/><rect x="10" y="5" width="4" height="12" rx="1" fill="rgba(8,19,10,.25)"/><path d="M6 9a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2Z"/><path d="M9 12v6M12 12v6M15 12v6" stroke="rgba(8,19,10,.35)" stroke-width="1.3" stroke-linecap="round"/></svg>
         </div>
         <h3>Depósitos para la calle</h3>
         <p>Cestos y contenedores urbanos para la vía pública, con mantenimiento y limpieza periódica.</p>
@@ -154,25 +168,40 @@
 
 <section class="alt">
   <div class="container about-grid">
-    <div class="about-art">
-      <svg viewBox="0 0 400 300">
-        <rect width="400" height="300" fill="#121815" />
-        <g stroke="#29332d" stroke-width="1">
-          <line x1="0" y1="60" x2="400" y2="60" /><line x1="0" y1="120" x2="400" y2="120" />
-          <line x1="0" y1="180" x2="400" y2="180" /><line x1="0" y1="240" x2="400" y2="240" />
-          <line x1="80" y1="0" x2="80" y2="300" /><line x1="160" y1="0" x2="160" y2="300" />
-          <line x1="240" y1="0" x2="240" y2="300" /><line x1="320" y1="0" x2="320" y2="300" />
+    <div class="about-art reveal-scale" style="aspect-ratio:0.8125/1; width:100%; max-width:340px; margin:0 auto;">
+      <svg viewBox="0 0 390 480" fill="none" style="position:absolute; inset:0; width:100%; height:100%;">
+        <rect width="390" height="480" fill="#121815" />
+        <ellipse cx="150" cy="270" rx="140" ry="205" stroke="#29332d" stroke-width="1" stroke-dasharray="3 6" />
+        <g class="recycle-spin">
+          <g transform="translate(256,58)">
+            <g transform="rotate(0)"><path d="M0,-22 L7,-10 L-2,-10 Z" fill="#7CB342"/><path d="M0,-22 L0,-6" stroke="#7CB342" stroke-width="4" stroke-linecap="round"/></g>
+            <g transform="rotate(120)"><path d="M0,-22 L7,-10 L-2,-10 Z" fill="#3fa446"/><path d="M0,-22 L0,-6" stroke="#3fa446" stroke-width="4" stroke-linecap="round"/></g>
+            <g transform="rotate(240)"><path d="M0,-22 L7,-10 L-2,-10 Z" fill="#0E3B2E"/><path d="M0,-22 L0,-6" stroke="#0E3B2E" stroke-width="4" stroke-linecap="round"/></g>
+          </g>
         </g>
-        <circle cx="200" cy="150" r="86" fill="none" stroke="#2E7D32" stroke-width="2" />
-        <circle cx="200" cy="150" r="58" fill="none" stroke="#7CB342" stroke-width="1.4" stroke-dasharray="2 5" />
-        <circle cx="200" cy="150" r="7" fill="#7CB342" />
-        <g stroke="#7CB342" stroke-width="2">
-          <line x1="200" y1="64" x2="200" y2="92" /><line x1="200" y1="208" x2="200" y2="236" />
-          <line x1="114" y1="150" x2="142" y2="150" /><line x1="258" y1="150" x2="286" y2="150" />
+        <g>
+          <rect x="20" y="250" width="75" height="95" rx="8" fill="#171e1a" stroke="#3a463e" stroke-width="2"/>
+          <rect x="30" y="262" width="34" height="26" rx="3" fill="#0e3b2e" stroke="#7CB342" stroke-width="1.5"/>
+          <rect x="95" y="230" width="120" height="115" rx="10" fill="#1e2622" stroke="#3fa446" stroke-width="2.5"/>
+          <line x1="95" y1="252" x2="215" y2="252" stroke="#3a463e" stroke-width="1"/>
+          <line x1="120" y1="266" x2="120" y2="332" stroke="#3a463e" stroke-width="1"/>
+          <line x1="150" y1="266" x2="150" y2="332" stroke="#3a463e" stroke-width="1"/>
+          <line x1="180" y1="266" x2="180" y2="332" stroke="#3a463e" stroke-width="1"/>
+          <circle cx="65" cy="356" r="24" fill="#171e1a" stroke="#3a463e" stroke-width="3"/>
+          <circle cx="65" cy="356" r="7" fill="#3a463e"/>
+          <circle cx="175" cy="356" r="24" fill="#171e1a" stroke="#3a463e" stroke-width="3"/>
+          <circle cx="175" cy="356" r="7" fill="#3a463e"/>
+        </g>
+        <g class="bin-lift">
+          <rect x="207" y="230" width="16" height="150" rx="6" fill="#1e2622" stroke="#3fa446" stroke-width="2"/>
+          <rect x="215" y="308" width="70" height="72" rx="8" fill="#0e3b2e" stroke="#7CB342" stroke-width="2.5"/>
+          <line x1="215" y1="322" x2="285" y2="322" stroke="#3fa446" stroke-width="2"/>
+          <path d="M232 340 L242 350 L232 360" fill="none" stroke="#7CB342" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M268 340 L258 350 L268 360" fill="none" stroke="#7CB342" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
       </svg>
     </div>
-    <div>
+    <div class="reveal">
       <div class="eyebrow">Nosotros</div>
       <h2>Cuidamos hoy, pensando en el mañana.</h2>
       <p style="margin-top:16px; max-width:460px;">Faraón Gestión Ambiental combina flota propia y mirada técnica para resolver la recolección y disposición de residuos de barrios, industrias y eventos, con foco en prácticas responsables.</p>
@@ -187,7 +216,7 @@
 </section>
 
 <section class="cta-strip">
-  <div class="container">
+  <div class="container reveal">
     <h2>¿Necesitás un servicio de recolección?</h2>
     <a href="https://wa.me/5491135878597" class="btn btn-ghost" target="_blank" rel="noopener">Escribinos por WhatsApp</a>
   </div>
@@ -203,6 +232,6 @@
   </div>
 </footer>
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=2"></script>
 </body>
 </html>
