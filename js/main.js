@@ -52,6 +52,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // ---- Contadores animados (hero) ----
+  const counters = document.querySelectorAll("[data-count-to]");
+  counters.forEach((el, i) => {
+    const target = parseInt(el.dataset.countTo, 10);
+    const prefix = el.dataset.prefix || "";
+    const suffix = el.dataset.suffix || "";
+    if (prefersReduced) {
+      el.textContent = prefix + target + suffix;
+      return;
+    }
+    const duration = 1600;
+    const startDelay = 350 + i * 150;
+    setTimeout(() => {
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = prefix + Math.round(target * eased) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }, startDelay);
+  });
+
   // ---- Botón flotante de WhatsApp ----
   const waFloat = document.createElement("a");
   waFloat.href = "https://wa.me/5491135878597?text=" + encodeURIComponent("Hola! Quiero comunicarme con Faraón Gestión Ambiental");
