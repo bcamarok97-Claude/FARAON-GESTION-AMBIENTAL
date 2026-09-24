@@ -214,6 +214,23 @@ document.addEventListener("DOMContentLoaded", () => {
       box.classList.add("is-orbit");
       const track = document.createElement("span");
       track.className = "orbit-track";
+      // hilo verde que recorre la órbita: estela que se apaga + punta brillante
+      const THREAD = [
+        ["orbit-tail t1", 30],
+        ["orbit-tail t2", 16],
+        ["orbit-head", 5],
+      ];
+      track.innerHTML =
+        '<svg class="orbit-svg"><ellipse class="orbit-base" pathLength="100"/>' +
+        THREAD.map(([cls]) => '<ellipse class="' + cls + '" pathLength="100"/>').join("") +
+        "</svg>";
+      const svg = track.querySelector("svg");
+      const ellipses = [...svg.querySelectorAll("ellipse")];
+      const thread = ellipses.slice(1).map((el, i) => {
+        const len = THREAD[i][1];
+        el.setAttribute("stroke-dasharray", len + " " + (100 - len));
+        return [el, len];
+      });
       const core = document.createElement("span");
       core.className = "orbit-core";
       core.innerHTML =
@@ -227,6 +244,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ry = box.clientHeight / 2 - 34;
         track.style.width = rx * 2 + "px";
         track.style.height = ry * 2 + "px";
+        svg.setAttribute("viewBox", "0 0 " + rx * 2 + " " + ry * 2);
+        ellipses.forEach((el) => {
+          el.setAttribute("cx", rx);
+          el.setAttribute("cy", ry);
+          el.setAttribute("rx", rx - 1);
+          el.setAttribute("ry", ry - 1);
+        });
       };
       measure();
       window.addEventListener("resize", measure);
@@ -244,6 +268,9 @@ document.addEventListener("DOMContentLoaded", () => {
           t.style.zIndex = depth > 0.5 ? 20 + Math.round(depth * 10) : Math.round(depth * 10);
           t.classList.toggle("is-front", depth > 0.93);
         });
+        // el hilo gira en el mismo sentido que las etiquetas, 2,4 veces más rápido
+        const head = ((((Math.PI / 2 - angle * 2.4) / (Math.PI * 2)) * 100) % 100 + 100) % 100;
+        thread.forEach(([el, len]) => el.setAttribute("stroke-dashoffset", (len - head).toFixed(2)));
       };
       const frame = (now) => {
         if (!running) return;
