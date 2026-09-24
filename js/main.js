@@ -11,6 +11,64 @@ function WHATSAPP_ICON_SVG(size) {
 document.addEventListener("DOMContentLoaded", () => {
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // ---- Desplegable de Servicios en el menú ----
+  const SERVICES = [
+    ["recoleccion", "Recolección de residuos"],
+    ["compactadores", "Equipos compactadores"],
+    ["roll-off", "Contenedores Roll Off"],
+    ["volquetes", "Volquetes"],
+    ["poda", "Poda y espacios verdes"],
+    ["depositos", "Depósitos para la calle"],
+  ];
+  const servLink = document.querySelector('.main-nav a[href="servicios.html"]');
+  if (servLink) {
+    const dd = document.createElement("div");
+    dd.className = "nav-dropdown";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "nav-dropdown-toggle" + (servLink.classList.contains("active") ? " active" : "");
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-haspopup", "true");
+    btn.innerHTML =
+      'Servicios<svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+    const panel = document.createElement("div");
+    panel.className = "nav-dropdown-panel";
+    panel.innerHTML =
+      '<div class="nav-dropdown-inner">' +
+      '<div class="nav-dropdown-label">Nuestros servicios</div>' +
+      SERVICES.map(
+        ([id, title], i) =>
+          '<a href="servicios.html#' + id + '" style="--d:' + i + '">' +
+          '<span class="dd-num">' + String(i + 1).padStart(2, "0") + "</span>" +
+          '<span class="dd-title">' + title + "</span>" +
+          '<svg class="dd-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>' +
+          "</a>"
+      ).join("") +
+      '<a href="servicios.html" class="dd-all" style="--d:' + SERVICES.length + '">Ver todos los servicios</a>' +
+      "</div>";
+    dd.append(btn, panel);
+    servLink.replaceWith(dd);
+
+    const setOpen = (open) => {
+      dd.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", String(open));
+    };
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setOpen(!dd.classList.contains("open"));
+    });
+    document.addEventListener("click", (e) => {
+      if (!dd.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && dd.classList.contains("open")) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+    panel.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+  }
+
   // ---- Menú móvil ----
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".main-nav");
