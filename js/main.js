@@ -8,6 +8,21 @@ function WHATSAPP_ICON_SVG(size) {
   );
 }
 
+// Hoja detallada (degradé, nervaduras y reflejo) para los emblemas circulares
+function LEAF_EMBLEM_SVG(id, size) {
+  return (
+    '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" aria-hidden="true"><defs>' +
+    '<linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1">' +
+    '<stop offset="0" stop-color="#1f6b34"/><stop offset="1" stop-color="#0a2a1c"/></linearGradient></defs>' +
+    '<g transform="rotate(38 12 12)">' +
+    '<path d="M12 1.8C17.6 5.6 18.7 12.6 12 20.6 5.3 12.6 6.4 5.6 12 1.8Z" fill="url(#' + id + ')"/>' +
+    '<path d="M12 4.6V21.6" stroke="#b8ee7c" stroke-opacity=".75" stroke-width=".9" stroke-linecap="round" fill="none"/>' +
+    '<path d="M12 9.2l2.9-2.3M12 12.6l3.5-2.6M12 16l3-2.1M12 9.2 9.1 6.9M12 12.6 8.5 10M12 16l-3-2.1" stroke="#b8ee7c" stroke-opacity=".5" stroke-width=".7" stroke-linecap="round" fill="none"/>' +
+    '<path d="M10.2 5.2C8.6 7.4 8.1 10 8.6 12.6" stroke="#fff" stroke-opacity=".28" stroke-width=".8" stroke-linecap="round" fill="none"/>' +
+    "</g></svg>"
+  );
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -142,22 +157,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const LEAF_PATH = "M0 -9 C5.2 -5.6 5.6 3.6 0 9 C-5.6 3.6 -5.2 -5.6 0 -9 Z";
     const sections = [...document.querySelectorAll("body > section")].slice(1);
     let pending = [];
-    sections.forEach((sec, n) => {
-      const burst = Array.from({ length: 18 }, (_, i) => {
+    // hojas de la ráfaga: salen hacia los costados (spread = alcance en px)
+    const makeLeaves = (n, count, spread, extraClass) =>
+      Array.from({ length: count }, (_, i) => {
         const side = i % 2 === 0 ? 1 : -1;
-        const tx = side * (50 + Math.random() * 380);
-        const ty = -70 + Math.random() * 190;
+        const tx = side * (40 + Math.random() * spread);
+        const ty = -80 + Math.random() * 200;
         const r = side * (120 + Math.random() * 260);
         const s = 0.7 + Math.random() * 0.7;
-        const delay = (Math.random() * 0.25).toFixed(2);
+        const delay = (Math.random() * 0.2).toFixed(2);
         const g = i % 3 === 0 ? "B" : "A";
         return (
-          '<svg class="ld-leaf" viewBox="-10 -10 20 20" style="--tx:' + tx.toFixed(0) + "px;--ty:" + ty.toFixed(0) +
+          '<svg class="ld-leaf' + extraClass + '" viewBox="-10 -10 20 20" style="--tx:' + tx.toFixed(0) + "px;--ty:" + ty.toFixed(0) +
           "px;--r:" + r.toFixed(0) + "deg;--s:" + s.toFixed(2) + ";--delay:" + delay + 's">' +
           '<path d="' + LEAF_PATH + '" fill="url(#ldLeaf' + g + n + ')"/>' +
           '<path d="M0 -7.5 Q0.6 0 0 8" class="vein"/></svg>'
         );
       }).join("");
+    sections.forEach((sec, n) => {
+      const burst = makeLeaves(n, 18, 380, "");
 
       const divider = document.createElement("div");
       divider.className = "leaf-divider";
@@ -170,10 +188,27 @@ document.addEventListener("DOMContentLoaded", () => {
         '<stop offset="0" stop-color="#93d657"/><stop offset=".5" stop-color="#3fa446"/><stop offset="1" stop-color="#0e3b2e"/></linearGradient>' +
         "</defs></svg>" +
         '<span class="ld-line ld-line-l"></span><span class="ld-line ld-line-r"></span>' +
-        '<span class="ld-emblem"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16Z"/><path d="M7 17 17 7" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></span>' +
+        '<button type="button" class="ld-emblem" tabindex="-1">' +
+        '<span class="core-wave"></span><span class="core-wave w2"></span><span class="core-ring"></span>' +
+        '<span class="core-orb">' + LEAF_EMBLEM_SVG("ldIcon" + n, 28) + "</span></button>" +
         '<span class="ld-burst">' + burst + "</span>";
       sec.before(divider);
       sec.classList.add("page-open");
+
+      // al tocar el emblema se desprende una nueva ráfaga de hojas
+      const emblem = divider.querySelector(".ld-emblem");
+      const burstEl = divider.querySelector(".ld-burst");
+      emblem.addEventListener("click", () => {
+        emblem.classList.remove("pressed");
+        void emblem.offsetWidth; // reinicia la animación del destello
+        emblem.classList.add("pressed");
+        if (prefersReduced) return;
+        burstEl.insertAdjacentHTML("beforeend", makeLeaves(n, 16, 300, " pop"));
+        burstEl.querySelectorAll(".ld-leaf.pop:not([data-live])").forEach((leaf) => {
+          leaf.dataset.live = "1";
+          leaf.addEventListener("animationend", () => leaf.remove(), { once: true });
+        });
+      });
 
       pending.push([divider, sec]);
     });
@@ -258,16 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
       core.innerHTML =
         '<span class="core-wave"></span><span class="core-wave w2"></span>' +
         '<span class="core-dash"></span><span class="core-ring"></span>' +
-        '<span class="core-orb">' +
-        '<svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><defs>' +
-        '<linearGradient id="' + lid + '" x1="0" y1="0" x2="1" y2="1">' +
-        '<stop offset="0" stop-color="#1f6b34"/><stop offset="1" stop-color="#0a2a1c"/></linearGradient></defs>' +
-        '<g transform="rotate(38 12 12)">' +
-        '<path d="M12 1.8C17.6 5.6 18.7 12.6 12 20.6 5.3 12.6 6.4 5.6 12 1.8Z" fill="url(#' + lid + ')"/>' +
-        '<path d="M12 4.6V21.6" stroke="#b8ee7c" stroke-opacity=".75" stroke-width=".9" stroke-linecap="round" fill="none"/>' +
-        '<path d="M12 9.2l2.9-2.3M12 12.6l3.5-2.6M12 16l3-2.1M12 9.2 9.1 6.9M12 12.6 8.5 10M12 16l-3-2.1" stroke="#b8ee7c" stroke-opacity=".5" stroke-width=".7" stroke-linecap="round" fill="none"/>' +
-        '<path d="M10.2 5.2C8.6 7.4 8.1 10 8.6 12.6" stroke="#fff" stroke-opacity=".28" stroke-width=".8" stroke-linecap="round" fill="none"/>' +
-        "</g></svg></span>";
+        '<span class="core-orb">' + LEAF_EMBLEM_SVG(lid, 34) + "</span>";
       box.append(track, comet, core);
 
       let rx = 0, ry = 0;
