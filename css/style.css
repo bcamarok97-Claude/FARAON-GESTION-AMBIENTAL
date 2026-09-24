@@ -991,6 +991,43 @@ footer p {
   mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2.5px));
 }
 
+/* hojas verdes orbitando alrededor del botón */
+.wa-leaves {
+  position: absolute;
+  inset: -18px;
+  width: calc(100% + 36px);
+  height: calc(100% + 36px);
+  z-index: 0;
+  overflow: visible;
+  pointer-events: none;
+  animation: waRingSpin 14s linear infinite;
+  filter: drop-shadow(0 2px 3px rgba(4, 12, 6, 0.55));
+  will-change: transform;
+}
+.wa-leaves .vein {
+  fill: none;
+  stroke: rgba(8, 30, 14, 0.55);
+  stroke-width: 0.7;
+  stroke-linecap: round;
+}
+.wa-leaves .vein-side {
+  stroke-width: 0.5;
+  stroke: rgba(8, 30, 14, 0.4);
+}
+.wa-leaves .shine {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+}
+/* al pasar el mouse, todo lo que gira se detiene */
+.whatsapp-float:hover .wa-leaves,
+.whatsapp-float:hover .wa-ring,
+.whatsapp-float:focus-visible .wa-leaves,
+.whatsapp-float:focus-visible .wa-ring {
+  animation-play-state: paused;
+}
+
 /* núcleo del botón: degradé radial glossy + sombras internas para dar profundidad */
 .wa-core {
   position: relative;
@@ -1044,6 +1081,11 @@ footer p {
     width: 46px;
     height: 46px;
   }
+  .wa-leaves {
+    inset: -15px;
+    width: calc(100% + 30px);
+    height: calc(100% + 30px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1051,5 +1093,8 @@ footer p {
   .wa-ring {
     animation: none;
     opacity: 0;
+  }
+  .wa-leaves {
+    animation: none;
   }
 }

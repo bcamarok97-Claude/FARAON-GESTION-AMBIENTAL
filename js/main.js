@@ -142,8 +142,35 @@ document.addEventListener("DOMContentLoaded", () => {
   waFloat.rel = "noopener";
   waFloat.className = "whatsapp-float";
   waFloat.setAttribute("aria-label", "Escribir por WhatsApp");
+  // Hojas en órbita: 8 hojas en círculo, tangentes al anillo, alternando tamaño y tono
+  const LEAF = "M0 -9 C5.2 -5.6 5.6 3.6 0 9 C-5.6 3.6 -5.2 -5.6 0 -9 Z";
+  const leaves = Array.from({ length: 8 }, (_, i) => {
+    const ang = i * 45;
+    const big = i % 2 === 0;
+    const s = big ? 1 : 0.78;
+    const tilt = big ? 58 : 122;
+    return (
+      '<g transform="rotate(' + ang + ") translate(0 -38) rotate(" + tilt + ") scale(" + s + ')">' +
+      '<path d="' + LEAF + '" fill="url(#waLeaf' + (big ? "A" : "B") + ')"/>' +
+      '<path d="M0 -7.5 Q0.6 0 0 8" class="vein"/>' +
+      '<path d="M0 -2 L2.6 -4.4 M0 2 L2.8 -0.2 M0 -2 L-2.6 -4.4 M0 2 L-2.8 -0.2" class="vein vein-side"/>' +
+      '<path d="M-1.6 -6.6 C-3.6 -3.6 -3.8 0 -2.6 3" class="shine"/>' +
+      "</g>"
+    );
+  }).join("");
+  const leavesSvg =
+    '<svg class="wa-leaves" viewBox="-50 -50 100 100" aria-hidden="true">' +
+    "<defs>" +
+    '<linearGradient id="waLeafA" x1="0" y1="-9" x2="0" y2="9" gradientUnits="userSpaceOnUse">' +
+    '<stop offset="0" stop-color="#c8f28a"/><stop offset=".45" stop-color="#6cc24a"/><stop offset="1" stop-color="#1f6b34"/></linearGradient>' +
+    '<linearGradient id="waLeafB" x1="0" y1="-9" x2="0" y2="9" gradientUnits="userSpaceOnUse">' +
+    '<stop offset="0" stop-color="#93d657"/><stop offset=".5" stop-color="#3fa446"/><stop offset="1" stop-color="#0e3b2e"/></linearGradient>' +
+    "</defs>" +
+    leaves +
+    "</svg>";
+
   waFloat.innerHTML =
-    '<span class="wa-pulse"></span><span class="wa-pulse wa-pulse-2"></span><span class="wa-ring"></span>' +
+    '<span class="wa-pulse"></span><span class="wa-pulse wa-pulse-2"></span>' + leavesSvg + '<span class="wa-ring"></span>' +
     '<span class="wa-core">' + WHATSAPP_ICON_SVG(26) + "</span>";
   document.body.appendChild(waFloat);
 
