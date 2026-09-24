@@ -135,6 +135,75 @@ document.addEventListener("DOMContentLoaded", () => {
     }, startDelay);
   });
 
+  // ---- Transición entre secciones (solo en Inicio) ----
+  // Entre cada sección: línea que se dibuja desde el centro, emblema con hoja,
+  // ráfaga de hojas y la sección siguiente que se "abre" como una hoja.
+  if (document.body.classList.contains("home")) {
+    const LEAF_PATH = "M0 -9 C5.2 -5.6 5.6 3.6 0 9 C-5.6 3.6 -5.2 -5.6 0 -9 Z";
+    const sections = [...document.querySelectorAll("body > section")].slice(1);
+    let pending = [];
+    sections.forEach((sec, n) => {
+      const burst = Array.from({ length: 18 }, (_, i) => {
+        const side = i % 2 === 0 ? 1 : -1;
+        const tx = side * (50 + Math.random() * 380);
+        const ty = -70 + Math.random() * 190;
+        const r = side * (120 + Math.random() * 260);
+        const s = 0.7 + Math.random() * 0.7;
+        const delay = (Math.random() * 0.25).toFixed(2);
+        const g = i % 3 === 0 ? "B" : "A";
+        return (
+          '<svg class="ld-leaf" viewBox="-10 -10 20 20" style="--tx:' + tx.toFixed(0) + "px;--ty:" + ty.toFixed(0) +
+          "px;--r:" + r.toFixed(0) + "deg;--s:" + s.toFixed(2) + ";--delay:" + delay + 's">' +
+          '<path d="' + LEAF_PATH + '" fill="url(#ldLeaf' + g + n + ')"/>' +
+          '<path d="M0 -7.5 Q0.6 0 0 8" class="vein"/></svg>'
+        );
+      }).join("");
+
+      const divider = document.createElement("div");
+      divider.className = "leaf-divider";
+      divider.setAttribute("aria-hidden", "true");
+      divider.innerHTML =
+        '<svg width="0" height="0" style="position:absolute"><defs>' +
+        '<linearGradient id="ldLeafA' + n + '" x1="0" y1="-9" x2="0" y2="9" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0" stop-color="#c8f28a"/><stop offset=".45" stop-color="#6cc24a"/><stop offset="1" stop-color="#1f6b34"/></linearGradient>' +
+        '<linearGradient id="ldLeafB' + n + '" x1="0" y1="-9" x2="0" y2="9" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0" stop-color="#93d657"/><stop offset=".5" stop-color="#3fa446"/><stop offset="1" stop-color="#0e3b2e"/></linearGradient>' +
+        "</defs></svg>" +
+        '<span class="ld-line ld-line-l"></span><span class="ld-line ld-line-r"></span>' +
+        '<span class="ld-emblem"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16Z"/><path d="M7 17 17 7" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></span>' +
+        '<span class="ld-burst">' + burst + "</span>";
+      sec.before(divider);
+      sec.classList.add("page-open");
+
+      pending.push([divider, sec]);
+    });
+
+    // Se abre cuando la línea llega al 78% de la pantalla, o si ya quedó
+    // arriba (salto directo, recarga a mitad de página, scroll muy rápido)
+    const check = () => {
+      pending = pending.filter(([divider, sec]) => {
+        if (prefersReduced || divider.getBoundingClientRect().top < window.innerHeight * 0.78) {
+          divider.classList.add("on");
+          sec.classList.add("opened");
+          return false;
+        }
+        return true;
+      });
+      if (!pending.length) window.removeEventListener("scroll", onScroll);
+    };
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        check();
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    check();
+  }
+
   // ---- Botón flotante de WhatsApp ----
   const waFloat = document.createElement("a");
   waFloat.href = "https://wa.me/5491135878597?text=" + encodeURIComponent("Hola! Quiero comunicarme con Faraón Gestión Ambiental");
