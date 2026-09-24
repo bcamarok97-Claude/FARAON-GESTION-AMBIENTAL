@@ -2153,7 +2153,7 @@ a.svc-tile:hover .dd-icon {
 /* panel superior con la unidad: cuadrícula técnica + resplandor */
 .unit-visual {
   position: relative;
-  height: 190px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2275,6 +2275,43 @@ a.svc-tile:hover .dd-icon {
 }
 .unit-cta:hover svg:last-child {
   transform: translateX(4px);
+}
+
+/* Tarjetas con foto real de la unidad */
+.unit-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
+  transition: transform 0.8s var(--ease-out), filter 0.4s ease;
+  filter: saturate(1.05) contrast(1.03);
+}
+.unit-card.has-photo:hover .unit-photo {
+  transform: scale(1.06);
+}
+.unit-card.has-photo .unit-icon {
+  display: none;
+}
+/* degradé abajo para fundir la foto con la tarjeta, y arriba para leer los carteles */
+.unit-card.has-photo .unit-visual::after {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: auto;
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(8, 13, 10, 0.55) 0%, transparent 28%),
+    linear-gradient(0deg, rgba(20, 27, 23, 0.95) 0%, rgba(20, 27, 23, 0.35) 22%, transparent 45%);
+}
+.unit-card.has-photo .unit-num,
+.unit-card.has-photo .unit-status {
+  z-index: 2;
+}
+.unit-card.has-photo .unit-num {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Adelanto en Inicio */
