@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---- Desplegable de Servicios en el menú ----
   const SERVICES = [
-    ["recoleccion", "Recolección de residuos", '<path d="M9 2h6a1 1 0 0 1 1 1v1h3a1 1 0 1 1 0 2h-.6l-1.1 13.2A2 2 0 0 1 15.3 21H8.7a2 2 0 0 1-2-1.8L5.6 6H5a1 1 0 1 1 0-2h3V3a1 1 0 0 1 1-1Z"/><path d="M9 9v9M12 9v9M15 9v9" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round"/>'],
+    ["recoleccion", "Recolección de RSU", '<path d="M9 2h6a1 1 0 0 1 1 1v1h3a1 1 0 1 1 0 2h-.6l-1.1 13.2A2 2 0 0 1 15.3 21H8.7a2 2 0 0 1-2-1.8L5.6 6H5a1 1 0 1 1 0-2h3V3a1 1 0 0 1 1-1Z"/><path d="M9 9v9M12 9v9M15 9v9" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round"/>'],
     ["compactadores", "Equipos compactadores", '<path d="M2 6a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v8h1.2l2.3-3.3A1 1 0 0 1 17.3 10H20a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a2.5 2.5 0 1 1-4.9.5H9.9a2.5 2.5 0 1 1-4.95-.5H3a1 1 0 0 1-1-1Z"/><circle cx="7.5" cy="17.5" r="1.7" fill="rgba(8,19,10,.5)"/><circle cx="17" cy="17.5" r="1.7" fill="rgba(8,19,10,.5)"/>'],
     ["roll-off", "Contenedores Roll Off", '<path d="M3 8h18l-1.4 11.2A2 2 0 0 1 17.6 21H6.4a2 2 0 0 1-2-1.8L3 8Z"/><path d="M2 8h20" stroke="rgba(8,19,10,.4)" stroke-width="1.6"/><path d="M6 6l1-2h10l1 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'],
     ["volquetes", "Volquetes", '<path d="M3 9h18l-1.5 9.4A2 2 0 0 1 17.5 20h-11a2 2 0 0 1-2-1.6L3 9Z"/><path d="M2 9h20" stroke="rgba(8,19,10,.4)" stroke-width="1.6"/><path d="M18 4l3 2.2-1.6 2.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 4v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'],
