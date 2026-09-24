@@ -315,8 +315,12 @@ document.addEventListener("DOMContentLoaded", () => {
       measure();
       window.addEventListener("resize", measure);
 
-      let angle = 0, speed = 0, target = 1, last = 0, running = false;
+      let angle = 0, last = 0, running = false;
       const TURN_MS = 26000; // las etiquetas dan una vuelta cada 26s
+      const AUTO_VEL = (-Math.PI * 2) / TURN_MS; // velocidad propia (rad/ms)
+      const MAX_VEL = 0.025; // tope al impulsarla con el mouse
+      let vel = 0; // velocidad actual (rad/ms)
+      let hovering = false, dragging = false;
       const COMET_RATIO = 2.6; // el cometa va 2,6 veces más rápido
       const hitUntil = new Array(n).fill(0);
       const draw = (now) => {
@@ -351,20 +355,67 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!running) return;
         const dt = last ? Math.min(now - last, 50) : 16;
         last = now;
-        speed += (target - speed) * 0.06;
-        angle -= speed * (dt / TURN_MS) * Math.PI * 2;
+        if (!dragging) {
+          // tiende a su velocidad propia (o a 0 con el mouse encima);
+          // si se la impulsó, frena de a poco como con fricción
+          const goal = hovering ? 0 : AUTO_VEL;
+          const k = 1 - Math.pow(Math.abs(vel) > Math.abs(AUTO_VEL) * 1.5 ? 0.985 : 0.94, dt / 16);
+          vel += (goal - vel) * k;
+          angle += vel * dt;
+        }
         draw(now);
         requestAnimationFrame(frame);
       };
       draw(performance.now());
       box.addEventListener("mouseenter", () => {
-        target = 0;
+        hovering = true;
         box.classList.add("is-paused");
       });
       box.addEventListener("mouseleave", () => {
-        target = 1;
+        hovering = false;
         box.classList.remove("is-paused");
       });
+
+      // Agarrar y girar a mano; al soltar con impulso sigue girando con inercia
+      const pointerParam = (e) => {
+        const r = box.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width / 2)) / (rx || 1);
+        const dy = (e.clientY - (r.top + r.height / 2)) / (ry || 1);
+        return Math.atan2(dx, dy); // mismo parámetro que ubica las etiquetas
+      };
+      const wrap = (d) => ((d + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      let lastP = 0, lastT = 0, dragVel = 0;
+      box.addEventListener("pointerdown", (e) => {
+        if (e.button !== 0) return;
+        dragging = true;
+        box.classList.add("is-dragging");
+        box.setPointerCapture(e.pointerId);
+        lastP = pointerParam(e);
+        lastT = performance.now();
+        dragVel = 0;
+        vel = 0;
+      });
+      box.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const p = pointerParam(e);
+        const now = performance.now();
+        const d = wrap(p - lastP);
+        angle += d;
+        const dt = Math.max(now - lastT, 1);
+        dragVel = dragVel * 0.6 + (d / dt) * 0.4; // velocidad suavizada del gesto
+        lastP = p;
+        lastT = now;
+      });
+      const endDrag = () => {
+        if (!dragging) return;
+        dragging = false;
+        box.classList.remove("is-dragging");
+        // si el gesto se frenó antes de soltar, no hay impulso
+        const idle = performance.now() - lastT > 90;
+        vel = idle ? 0 : Math.max(-MAX_VEL, Math.min(MAX_VEL, dragVel));
+      };
+      box.addEventListener("pointerup", endDrag);
+      box.addEventListener("pointercancel", endDrag);
       // solo anima mientras la sección está en pantalla
       new IntersectionObserver(([e]) => {
         if (e.isIntersecting && !running) {

@@ -1919,6 +1919,16 @@ a.svc-tile:hover .dd-icon {
   position: relative;
   display: block;
   height: 300px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y; /* en celular: deslizar al costado gira, vertical sigue scrolleando */
+}
+.svc-tags.is-orbit.is-dragging {
+  cursor: grabbing;
+}
+.svc-tags.is-orbit.is-dragging .svc-tag {
+  cursor: grabbing;
 }
 .svc-tags.is-orbit .svc-tag {
   position: absolute;
