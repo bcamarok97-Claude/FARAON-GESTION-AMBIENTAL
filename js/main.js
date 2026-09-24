@@ -206,36 +206,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---- "Para quién es": etiquetas girando en órbita (páginas de servicio) ----
   // Carrusel en elipse alrededor de un emblema: adelante grandes y nítidas,
-  // atrás chicas y tenues. Al pasar el mouse frena suave.
+  // atrás chicas y tenues. Un cometa de luz recorre la órbita y hace destellar
+  // cada etiqueta al pasar. Al pasar el mouse todo frena suave.
   if (!prefersReduced) {
-    document.querySelectorAll(".svc-tags").forEach((box) => {
+    document.querySelectorAll(".svc-tags").forEach((box, bi) => {
       const tags = [...box.children];
       const n = tags.length;
       box.classList.add("is-orbit");
+
+      // Estela del cometa: segmentos superpuestos que se afinan y apagan hacia atrás
+      const TAIL = 14;
+      const TAIL_LEN = 22; // largo total de la estela (% de la órbita)
       const track = document.createElement("span");
       track.className = "orbit-track";
-      // hilo verde que recorre la órbita: estela que se apaga + punta brillante
-      const THREAD = [
-        ["orbit-tail t1", 30],
-        ["orbit-tail t2", 16],
-        ["orbit-head", 5],
-      ];
+      const gid = "orbitGrad" + bi;
+      let tail = "";
+      for (let k = 0; k < TAIL; k++) {
+        const f = 1 - k / TAIL; // 1 = pegado a la cabeza
+        tail +=
+          '<ellipse class="orbit-tail" pathLength="100" data-len="' + (TAIL_LEN * (k + 1) / TAIL).toFixed(2) +
+          '" style="stroke-opacity:' + (0.06 + 0.5 * f * f).toFixed(3) + ";stroke-width:" + (0.8 + 2 * f).toFixed(2) + '"/>';
+      }
       track.innerHTML =
-        '<svg class="orbit-svg"><ellipse class="orbit-base" pathLength="100"/>' +
-        THREAD.map(([cls]) => '<ellipse class="' + cls + '" pathLength="100"/>').join("") +
+        '<svg class="orbit-svg"><defs>' +
+        '<linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#93d657" stop-opacity=".08"/>' +
+        '<stop offset=".55" stop-color="#93d657" stop-opacity=".22"/>' +
+        '<stop offset="1" stop-color="#c8f28a" stop-opacity=".55"/></linearGradient></defs>' +
+        '<ellipse class="orbit-inner" pathLength="100"/>' +
+        '<ellipse class="orbit-base" pathLength="100" stroke="url(#' + gid + ')"/>' +
+        tail +
         "</svg>";
       const svg = track.querySelector("svg");
-      const ellipses = [...svg.querySelectorAll("ellipse")];
-      const thread = ellipses.slice(1).map((el, i) => {
-        const len = THREAD[i][1];
+      const inner = svg.querySelector(".orbit-inner");
+      const base = svg.querySelector(".orbit-base");
+      const tails = [...svg.querySelectorAll(".orbit-tail")].map((el) => {
+        const len = parseFloat(el.dataset.len);
         el.setAttribute("stroke-dasharray", len + " " + (100 - len));
         return [el, len];
       });
+
+      // Cabeza del cometa: esfera de luz con halo (fuera del SVG para poder
+      // pasar por delante o por detrás del emblema según la profundidad)
+      const comet = document.createElement("span");
+      comet.className = "orbit-comet";
+
+      // Emblema central: esfera de vidrio con hoja, anillo de luz y ondas
       const core = document.createElement("span");
       core.className = "orbit-core";
+      const lid = "orbitLeaf" + bi;
       core.innerHTML =
-        '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16Z"/><path d="M7 17 17 7" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>';
-      box.append(track, core);
+        '<span class="core-wave"></span><span class="core-wave w2"></span>' +
+        '<span class="core-dash"></span><span class="core-ring"></span>' +
+        '<span class="core-orb">' +
+        '<svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><defs>' +
+        '<linearGradient id="' + lid + '" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="#1f6b34"/><stop offset="1" stop-color="#0a2a1c"/></linearGradient></defs>' +
+        '<g transform="rotate(38 12 12)">' +
+        '<path d="M12 1.8C17.6 5.6 18.7 12.6 12 20.6 5.3 12.6 6.4 5.6 12 1.8Z" fill="url(#' + lid + ')"/>' +
+        '<path d="M12 4.6V21.6" stroke="#b8ee7c" stroke-opacity=".75" stroke-width=".9" stroke-linecap="round" fill="none"/>' +
+        '<path d="M12 9.2l2.9-2.3M12 12.6l3.5-2.6M12 16l3-2.1M12 9.2 9.1 6.9M12 12.6 8.5 10M12 16l-3-2.1" stroke="#b8ee7c" stroke-opacity=".5" stroke-width=".7" stroke-linecap="round" fill="none"/>' +
+        '<path d="M10.2 5.2C8.6 7.4 8.1 10 8.6 12.6" stroke="#fff" stroke-opacity=".28" stroke-width=".8" stroke-linecap="round" fill="none"/>' +
+        "</g></svg></span>";
+      box.append(track, comet, core);
 
       let rx = 0, ry = 0;
       const measure = () => {
@@ -245,32 +278,48 @@ document.addEventListener("DOMContentLoaded", () => {
         track.style.width = rx * 2 + "px";
         track.style.height = ry * 2 + "px";
         svg.setAttribute("viewBox", "0 0 " + rx * 2 + " " + ry * 2);
-        ellipses.forEach((el) => {
+        svg.querySelectorAll("ellipse").forEach((el) => {
+          const pad = el === inner ? 16 : 1;
           el.setAttribute("cx", rx);
           el.setAttribute("cy", ry);
-          el.setAttribute("rx", rx - 1);
-          el.setAttribute("ry", ry - 1);
+          el.setAttribute("rx", rx - pad);
+          el.setAttribute("ry", ry - pad);
         });
       };
       measure();
       window.addEventListener("resize", measure);
 
       let angle = 0, speed = 0, target = 1, last = 0, running = false;
-      const TURN_MS = 26000; // una vuelta completa cada 26s
-      const draw = () => {
-        tags.forEach((t, i) => {
+      const TURN_MS = 26000; // las etiquetas dan una vuelta cada 26s
+      const COMET_RATIO = 2.6; // el cometa va 2,6 veces más rápido
+      const hitUntil = new Array(n).fill(0);
+      const draw = (now) => {
+        // posición del cometa sobre la elipse (parámetro t en radianes)
+        const t = Math.PI / 2 - angle * COMET_RATIO;
+        const head = (((t / (Math.PI * 2)) * 100) % 100 + 100) % 100;
+        tails.forEach(([el, len]) => el.setAttribute("stroke-dashoffset", (len - head).toFixed(2)));
+        const cx = Math.cos(t) * (rx - 1);
+        const cy = Math.sin(t) * (ry - 1);
+        const cDepth = (Math.sin(t) + 1) / 2; // abajo = adelante
+        comet.style.transform = `translate(-50%, -50%) translate(${cx.toFixed(1)}px, ${cy.toFixed(1)}px) scale(${(0.65 + 0.45 * cDepth).toFixed(3)})`;
+        comet.style.opacity = (0.45 + 0.55 * cDepth).toFixed(3);
+        comet.style.zIndex = cDepth > 0.5 ? 26 : 8;
+
+        tags.forEach((tg, i) => {
           const a = angle + (i / n) * Math.PI * 2;
           const depth = (Math.cos(a) + 1) / 2; // 1 = adelante, 0 = atrás
           const x = Math.sin(a) * rx;
           const y = Math.cos(a) * ry;
-          t.style.transform = `translate(-50%, -50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${(0.7 + 0.3 * depth).toFixed(3)})`;
-          t.style.opacity = (0.28 + 0.72 * depth).toFixed(3);
-          t.style.zIndex = depth > 0.5 ? 20 + Math.round(depth * 10) : Math.round(depth * 10);
-          t.classList.toggle("is-front", depth > 0.93);
+          tg.style.transform = `translate(-50%, -50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${(0.7 + 0.3 * depth).toFixed(3)})`;
+          tg.style.opacity = (0.28 + 0.72 * depth).toFixed(3);
+          tg.style.zIndex = depth > 0.5 ? 20 + Math.round(depth * 10) : Math.round(depth * 10);
+          tg.classList.toggle("is-front", depth > 0.93);
+          // destello cuando el cometa pasa por la etiqueta
+          const tagT = Math.PI / 2 - a;
+          let d = Math.abs(((t - tagT) % (Math.PI * 2) + Math.PI * 3) % (Math.PI * 2) - Math.PI);
+          if (d < 0.16) hitUntil[i] = now + 420;
+          tg.classList.toggle("is-hit", now < hitUntil[i]);
         });
-        // el hilo gira en el mismo sentido que las etiquetas, 2,4 veces más rápido
-        const head = ((((Math.PI / 2 - angle * 2.4) / (Math.PI * 2)) * 100) % 100 + 100) % 100;
-        thread.forEach(([el, len]) => el.setAttribute("stroke-dashoffset", (len - head).toFixed(2)));
       };
       const frame = (now) => {
         if (!running) return;
@@ -278,12 +327,18 @@ document.addEventListener("DOMContentLoaded", () => {
         last = now;
         speed += (target - speed) * 0.06;
         angle -= speed * (dt / TURN_MS) * Math.PI * 2;
-        draw();
+        draw(now);
         requestAnimationFrame(frame);
       };
-      draw();
-      box.addEventListener("mouseenter", () => (target = 0));
-      box.addEventListener("mouseleave", () => (target = 1));
+      draw(performance.now());
+      box.addEventListener("mouseenter", () => {
+        target = 0;
+        box.classList.add("is-paused");
+      });
+      box.addEventListener("mouseleave", () => {
+        target = 1;
+        box.classList.remove("is-paused");
+      });
       // solo anima mientras la sección está en pantalla
       new IntersectionObserver(([e]) => {
         if (e.isIntersecting && !running) {

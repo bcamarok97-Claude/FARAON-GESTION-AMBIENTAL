@@ -1864,13 +1864,22 @@ a.svc-tile:hover .dd-icon {
 .svc-tags.is-orbit .svc-tag {
   transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
 }
+/* destello cuando el cometa pasa por una etiqueta */
+.svc-tags.is-orbit .svc-tag.is-hit {
+  border-color: #d8f7ae;
+  color: #effcd9;
+  box-shadow: 0 0 0 4px rgba(147, 214, 87, 0.12), 0 0 26px 2px rgba(147, 214, 87, 0.55);
+  transition: border-color 0.08s ease, color 0.08s ease, box-shadow 0.08s ease;
+}
+
+/* Órbita: anillo con profundidad (más brillante adelante) + órbita punteada interior */
 .orbit-track {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(63, 164, 70, 0.12), transparent);
+  background: radial-gradient(closest-side, rgba(63, 164, 70, 0.14), rgba(63, 164, 70, 0.04) 60%, transparent);
   pointer-events: none;
 }
 .orbit-svg {
@@ -1885,46 +1894,146 @@ a.svc-tile:hover .dd-icon {
   stroke-linecap: round;
 }
 .orbit-base {
-  stroke: rgba(147, 214, 87, 0.14);
-  stroke-width: 1;
+  stroke-width: 1.4;
 }
-.orbit-tail.t1 {
-  stroke: rgba(147, 214, 87, 0.18);
-  stroke-width: 1.5;
+.orbit-inner {
+  stroke: rgba(147, 214, 87, 0.22);
+  stroke-width: 1.2;
+  stroke-dasharray: 0.15 1.6;
+  animation: orbitInner 60s linear infinite;
 }
-.orbit-tail.t2 {
-  stroke: rgba(147, 214, 87, 0.45);
-  stroke-width: 1.8;
+.is-paused .orbit-inner {
+  animation-play-state: paused;
 }
-.orbit-head {
-  stroke: #d8f7ae;
-  stroke-width: 2.6;
-  filter: drop-shadow(0 0 4px rgba(147, 214, 87, 0.95)) drop-shadow(0 0 10px rgba(147, 214, 87, 0.6));
+@keyframes orbitInner {
+  to { stroke-dashoffset: 100; }
 }
+.orbit-tail {
+  stroke: #b5ec74;
+}
+
+/* Cometa: esfera de luz con halo */
+.orbit-comet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, #ffffff 0%, #effcd9 30%, #b5ec74 60%, rgba(147, 214, 87, 0) 72%);
+  box-shadow: 0 0 10px 3px rgba(201, 245, 146, 0.85), 0 0 26px 8px rgba(147, 214, 87, 0.45), 0 0 50px 14px rgba(63, 164, 70, 0.25);
+  will-change: transform, opacity;
+}
+
+/* Emblema central */
 .orbit-core {
   position: absolute;
   left: 50%;
   top: 50%;
   z-index: 15;
-  width: 58px;
-  height: 58px;
+  width: 112px;
+  height: 112px;
   transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+/* ondas que se expanden desde la esfera */
+.core-wave {
+  position: absolute;
+  inset: 26px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(147, 214, 87, 0.55);
+  opacity: 0;
+  animation: coreWave 3.6s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+.core-wave.w2 {
+  animation-delay: 1.8s;
+}
+@keyframes coreWave {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+/* círculo punteado que gira en sentido contrario */
+.core-dash {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1.5px dotted rgba(147, 214, 87, 0.4);
+  animation: coreSpin 24s linear infinite reverse;
+}
+/* anillo de luz: degradé cónico con una sola franja brillante que gira */
+.core-ring {
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 55%, rgba(147, 214, 87, 0.15) 70%, #c8f28a 92%, #ffffff 97%, transparent 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  filter: drop-shadow(0 0 4px rgba(147, 214, 87, 0.9));
+  animation: coreSpin 3.2s linear infinite;
+}
+.is-paused .core-ring,
+.is-paused .core-dash {
+  animation-play-state: paused;
+}
+@keyframes coreSpin {
+  to { transform: rotate(360deg); }
+}
+/* esfera de vidrio con la hoja */
+.core-orb {
+  position: relative;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #08130a;
-  background: radial-gradient(circle at 34% 26%, #e9fccd, var(--accent-light) 42%, var(--accent) 76%, var(--accent-dark) 100%);
-  box-shadow: 0 0 0 8px rgba(147, 214, 87, 0.08), 0 14px 34px -8px rgba(63, 164, 70, 0.75),
-    inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -6px 9px rgba(8, 19, 10, 0.35);
-  animation: orbitCore 3.2s ease-in-out infinite;
+  background: radial-gradient(circle at 32% 24%, #f4ffe6 0%, #c8f28a 18%, var(--accent-light) 40%, var(--accent) 72%, var(--accent-dark) 100%);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 18px 40px -10px rgba(63, 164, 70, 0.9),
+    0 0 36px 4px rgba(147, 214, 87, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.6),
+    inset 0 -10px 16px rgba(8, 30, 14, 0.45);
+  animation: coreBreath 3.6s ease-in-out infinite;
 }
-.orbit-core svg {
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3));
+/* reflejo tipo vidrio en la parte de arriba */
+.core-orb::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 12px;
+  right: 12px;
+  height: 42%;
+  border-radius: 50% 50% 45% 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  pointer-events: none;
 }
-@keyframes orbitCore {
-  0%, 100% { box-shadow: 0 0 0 8px rgba(147, 214, 87, 0.08), 0 14px 34px -8px rgba(63, 164, 70, 0.75), inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -6px 9px rgba(8, 19, 10, 0.35); }
-  50% { box-shadow: 0 0 0 16px rgba(147, 214, 87, 0.03), 0 14px 40px -6px rgba(63, 164, 70, 0.9), inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -6px 9px rgba(8, 19, 10, 0.35); }
+/* brillo chico que titila */
+.core-orb::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+  animation: coreTwinkle 3.6s ease-in-out infinite;
+}
+.core-orb svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35)) drop-shadow(0 2px 3px rgba(8, 30, 14, 0.35));
+}
+@keyframes coreBreath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes coreTwinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.6); }
+  50% { opacity: 1; transform: scale(1); }
 }
 @media (max-width: 860px) {
   .svc-tags.is-orbit {
@@ -1935,7 +2044,6 @@ a.svc-tile:hover .dd-icon {
     padding: 8px 14px;
   }
   .orbit-core {
-    width: 48px;
-    height: 48px;
+    transform: translate(-50%, -50%) scale(0.82);
   }
 }
