@@ -1483,33 +1483,216 @@ a.card-more:hover {
   background: var(--accent-soft);
 }
 
-/* Cómo trabajamos */
+/* Cómo trabajamos: línea de tiempo con nodos conectados por flechas */
 .svc-steps {
+  --gap: 28px;
+  --node: 68px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  counter-reset: step;
+  gap: var(--gap);
 }
 .svc-step {
   position: relative;
-  padding: 26px 22px;
-  border-top: 2px solid var(--accent);
-  background: linear-gradient(180deg, rgba(63, 164, 70, 0.07), transparent 70%);
+  display: flex;
+  flex-direction: column;
 }
-.svc-step-num {
-  display: block;
+.svc-step .step-body {
+  flex: 1; /* tarjetas de igual altura */
+}
+.step-node {
+  position: relative;
+  z-index: 2;
+  width: var(--node);
+  height: var(--node);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #08130a;
+  background: radial-gradient(circle at 34% 26%, #e9fccd, var(--accent-light) 42%, var(--accent) 76%, var(--accent-dark) 100%);
+  box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px rgba(147, 214, 87, 0.22), 0 16px 34px -10px rgba(63, 164, 70, 0.75),
+    inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -7px 10px rgba(8, 19, 10, 0.35);
+  transition: transform 0.4s var(--ease-out);
+}
+.step-icon {
+  display: flex;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3));
+}
+.step-num {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  min-width: 28px;
+  padding: 3px 6px;
+  border-radius: 100px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
   color: var(--accent-light);
-  margin-bottom: 14px;
+  background: var(--bg);
+  border: 1px solid rgba(147, 214, 87, 0.45);
 }
-.svc-step h3 {
+.svc-step:hover .step-node {
+  transform: translateY(-4px) rotate(-6deg);
+}
+.step-body {
+  margin-top: 26px;
+  padding: 22px 22px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  transition: border-color 0.25s ease, transform 0.3s var(--ease-out);
+}
+.svc-step:hover .step-body {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+.step-body h3 {
   font-size: 18px;
   margin-bottom: 8px;
 }
-.svc-step p {
+.step-body p {
   font-size: 14px;
+}
+/* el último paso es el resultado: se destaca */
+.svc-step.is-final .step-body {
+  border-color: rgba(147, 214, 87, 0.4);
+  background: linear-gradient(160deg, rgba(63, 164, 70, 0.18), var(--surface) 60%);
+  box-shadow: 0 18px 40px -20px rgba(147, 214, 87, 0.45);
+}
+.svc-step.is-final .step-node {
+  box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px rgba(147, 214, 87, 0.5), 0 0 30px 4px rgba(147, 214, 87, 0.35),
+    inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -7px 10px rgba(8, 19, 10, 0.35);
+}
+
+/* Conector entre un paso y el siguiente: se llena al aparecer y lleva flecha */
+.step-link {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--node) / 2 - 1px);
+  left: calc(var(--node) + 14px);
+  right: calc(var(--gap) * -1 + 14px);
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  box-shadow: 0 0 10px rgba(147, 214, 87, 0.45);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s var(--ease-out) calc(0.35s + var(--i, 0) * 0.35s);
+}
+.step-link::before {
+  /* riel tenue de fondo, visible antes de que se llene */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(147, 214, 87, 0.12);
+  z-index: -1;
+}
+.step-link::after {
+  /* punta de flecha */
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-top: 2px solid var(--accent-light);
+  border-right: 2px solid var(--accent-light);
+  transform: translateY(-50%) rotate(45deg);
+  filter: drop-shadow(0 0 4px rgba(147, 214, 87, 0.8));
+}
+.svc-step.visible .step-link {
+  transform: scaleX(1);
+}
+/* destello que recorre la línea marcando el sentido del proceso */
+.step-flow {
+  position: absolute;
+  inset: -2px 10px -2px 0;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.step-flow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #f1ffe0, transparent);
+  filter: blur(1px);
+  transform: translateX(-120%);
+  animation: stepFlow 2.4s ease-in-out infinite;
+  animation-delay: calc(1.2s + var(--i, 0) * 0.35s);
+}
+@keyframes stepFlow {
+  0% { transform: translateX(-120%); }
+  60%, 100% { transform: translateX(260%); }
+}
+
+@media (max-width: 860px) {
+  .svc-steps {
+    grid-template-columns: 1fr;
+    --gap: 22px;
+    --node: 58px;
+  }
+  .svc-step {
+    display: grid;
+    grid-template-columns: var(--node) 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .step-body {
+    margin-top: 0;
+  }
+  /* en celular la línea baja vertical, de nodo a nodo */
+  .step-link {
+    top: calc(var(--node) + 12px);
+    bottom: calc(var(--gap) * -1 + 12px);
+    left: calc(var(--node) / 2 - 1px);
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(180deg, var(--accent), var(--accent-light));
+    transform: scaleY(0);
+    transform-origin: center top;
+  }
+  .svc-step.visible .step-link {
+    transform: scaleY(1);
+  }
+  .step-link::after {
+    right: 50%;
+    top: auto;
+    bottom: 0;
+    transform: translateX(50%) rotate(135deg);
+  }
+  .step-flow {
+    inset: 0 -2px 10px -2px;
+  }
+  .step-flow::before {
+    width: auto;
+    height: 40%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: auto;
+    background: linear-gradient(180deg, transparent, #f1ffe0, transparent);
+    animation-name: stepFlowV;
+  }
+  @keyframes stepFlowV {
+    0% { transform: translateY(-120%); }
+    60%, 100% { transform: translateY(260%); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .step-link {
+    transition: none;
+    transform: none !important;
+  }
+  .step-flow::before {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* Resto de los servicios (solo títulos) */
@@ -1585,14 +1768,6 @@ a.svc-tile:hover .dd-icon {
   }
   .svc-features,
   .svc-tiles {
-    grid-template-columns: 1fr;
-  }
-  .svc-steps {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 520px) {
-  .svc-steps {
     grid-template-columns: 1fr;
   }
 }
