@@ -1601,3 +1601,86 @@ a.svc-tile:hover .dd-icon {
     animation: none;
   }
 }
+
+/* ---- "Para quién es" en órbita giratoria ---- */
+.svc-tags.is-orbit {
+  position: relative;
+  display: block;
+  height: 300px;
+}
+.svc-tags.is-orbit .svc-tag {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  white-space: nowrap;
+  will-change: transform, opacity;
+  background: rgba(20, 29, 23, 0.92);
+  backdrop-filter: blur(6px);
+}
+/* la etiqueta que pasa por adelante se ilumina */
+.svc-tags.is-orbit .svc-tag.is-front {
+  border-color: var(--accent-light);
+  color: var(--accent-light);
+  background: linear-gradient(135deg, rgba(63, 164, 70, 0.28), rgba(20, 29, 23, 0.95));
+  box-shadow: 0 10px 30px -10px rgba(147, 214, 87, 0.55);
+}
+.svc-tags.is-orbit .svc-tag {
+  transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+}
+.orbit-track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(147, 214, 87, 0.16);
+  background: radial-gradient(closest-side, rgba(63, 164, 70, 0.12), transparent);
+  pointer-events: none;
+}
+.orbit-track::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-bottom-color: rgba(147, 214, 87, 0.5);
+  filter: blur(0.5px);
+}
+.orbit-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 15;
+  width: 58px;
+  height: 58px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #08130a;
+  background: radial-gradient(circle at 34% 26%, #e9fccd, var(--accent-light) 42%, var(--accent) 76%, var(--accent-dark) 100%);
+  box-shadow: 0 0 0 8px rgba(147, 214, 87, 0.08), 0 14px 34px -8px rgba(63, 164, 70, 0.75),
+    inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -6px 9px rgba(8, 19, 10, 0.35);
+  animation: orbitCore 3.2s ease-in-out infinite;
+}
+.orbit-core svg {
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3));
+}
+@keyframes orbitCore {
+  0%, 100% { box-shadow: 0 0 0 8px rgba(147, 214, 87, 0.08), 0 14px 34px -8px rgba(63, 164, 70, 0.75), inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -6px 9px rgba(8, 19, 10, 0.35); }
+  50% { box-shadow: 0 0 0 16px rgba(147, 214, 87, 0.03), 0 14px 40px -6px rgba(63, 164, 70, 0.9), inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -6px 9px rgba(8, 19, 10, 0.35); }
+}
+@media (max-width: 860px) {
+  .svc-tags.is-orbit {
+    height: 340px;
+  }
+  .svc-tags.is-orbit .svc-tag {
+    font-size: 12.5px;
+    padding: 8px 14px;
+  }
+  .orbit-core {
+    width: 48px;
+    height: 48px;
+  }
+}

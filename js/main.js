@@ -204,6 +204,72 @@ document.addEventListener("DOMContentLoaded", () => {
     check();
   }
 
+  // ---- "Para quién es": etiquetas girando en órbita (páginas de servicio) ----
+  // Carrusel en elipse alrededor de un emblema: adelante grandes y nítidas,
+  // atrás chicas y tenues. Al pasar el mouse frena suave.
+  if (!prefersReduced) {
+    document.querySelectorAll(".svc-tags").forEach((box) => {
+      const tags = [...box.children];
+      const n = tags.length;
+      box.classList.add("is-orbit");
+      const track = document.createElement("span");
+      track.className = "orbit-track";
+      const core = document.createElement("span");
+      core.className = "orbit-core";
+      core.innerHTML =
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16Z"/><path d="M7 17 17 7" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>';
+      box.append(track, core);
+
+      let rx = 0, ry = 0;
+      const measure = () => {
+        const maxW = Math.max(...tags.map((t) => t.offsetWidth));
+        rx = Math.max(70, box.clientWidth / 2 - maxW * 0.42);
+        ry = box.clientHeight / 2 - 34;
+        track.style.width = rx * 2 + "px";
+        track.style.height = ry * 2 + "px";
+      };
+      measure();
+      window.addEventListener("resize", measure);
+
+      let angle = 0, speed = 0, target = 1, last = 0, running = false;
+      const TURN_MS = 26000; // una vuelta completa cada 26s
+      const draw = () => {
+        tags.forEach((t, i) => {
+          const a = angle + (i / n) * Math.PI * 2;
+          const depth = (Math.cos(a) + 1) / 2; // 1 = adelante, 0 = atrás
+          const x = Math.sin(a) * rx;
+          const y = Math.cos(a) * ry;
+          t.style.transform = `translate(-50%, -50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${(0.7 + 0.3 * depth).toFixed(3)})`;
+          t.style.opacity = (0.28 + 0.72 * depth).toFixed(3);
+          t.style.zIndex = depth > 0.5 ? 20 + Math.round(depth * 10) : Math.round(depth * 10);
+          t.classList.toggle("is-front", depth > 0.93);
+        });
+      };
+      const frame = (now) => {
+        if (!running) return;
+        const dt = last ? Math.min(now - last, 50) : 16;
+        last = now;
+        speed += (target - speed) * 0.06;
+        angle -= speed * (dt / TURN_MS) * Math.PI * 2;
+        draw();
+        requestAnimationFrame(frame);
+      };
+      draw();
+      box.addEventListener("mouseenter", () => (target = 0));
+      box.addEventListener("mouseleave", () => (target = 1));
+      // solo anima mientras la sección está en pantalla
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting && !running) {
+          running = true;
+          last = 0;
+          requestAnimationFrame(frame);
+        } else if (!e.isIntersecting) {
+          running = false;
+        }
+      }).observe(box);
+    });
+  }
+
   // ---- Botón flotante de WhatsApp ----
   const waFloat = document.createElement("a");
   waFloat.href = "https://wa.me/5491135878597?text=" + encodeURIComponent("Hola! Quiero comunicarme con Faraón Gestión Ambiental");
