@@ -275,7 +275,7 @@ p {
   position: absolute;
   top: calc(100% + 18px);
   left: 50%;
-  width: 320px;
+  width: 330px;
   transform: translate(-50%, -10px) scale(0.97);
   transform-origin: top center;
   opacity: 0;
@@ -335,10 +335,11 @@ p {
   padding: 8px 12px 10px;
 }
 .main-nav .nav-dropdown-inner a {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 11px 12px;
+  gap: 12px;
+  padding: 8px 12px 8px 8px;
   border: none;
   border-radius: 10px;
   color: var(--text-dim);
@@ -352,30 +353,70 @@ p {
   transform: none;
   transition-delay: 0s, 0s, calc(0.06s + var(--d) * 0.04s), calc(0.06s + var(--d) * 0.04s);
 }
-.dd-num {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent);
-  width: 20px;
-  transition: color 0.2s ease;
+/* Mini badge glossy con el ícono de cada servicio */
+.dd-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #08130a;
+  background: radial-gradient(circle at 30% 22%, #e9fccd, var(--accent-light) 40%, var(--accent) 78%, var(--accent-dark) 120%);
+  box-shadow: 0 6px 14px -6px rgba(63, 164, 70, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -2px 3px rgba(8, 19, 10, 0.25);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.25s ease;
+}
+/* Reflejo superior tipo vidrio */
+.dd-icon::after {
+  content: "";
+  position: absolute;
+  inset: 1px 3px auto;
+  height: 45%;
+  border-radius: 9px 9px 12px 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+.dd-icon svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3));
+}
+.nav-dropdown-inner a:hover .dd-icon,
+.nav-dropdown-inner a:focus-visible .dd-icon {
+  transform: rotate(-8deg) scale(1.08);
+  box-shadow: 0 8px 18px -6px rgba(147, 214, 87, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 3px rgba(8, 19, 10, 0.25);
 }
 .dd-title {
   flex: 1;
 }
+.dd-num {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-faint);
+  transition: opacity 0.2s ease, transform 0.25s var(--ease-out);
+}
 .dd-arrow {
+  position: absolute;
+  right: 14px;
   opacity: 0;
   transform: translateX(-6px);
   color: var(--accent-light);
   transition: opacity 0.2s ease, transform 0.25s var(--ease-out);
 }
+.nav-dropdown-inner a:hover .dd-num,
+.nav-dropdown-inner a:focus-visible .dd-num {
+  opacity: 0;
+  transform: translateX(6px);
+}
 .main-nav .nav-dropdown-inner a:hover,
 .main-nav .nav-dropdown-inner a:focus-visible {
   background: var(--accent-soft);
   color: var(--text);
-}
-.nav-dropdown-inner a:hover .dd-num {
-  color: var(--accent-light);
 }
 .nav-dropdown-inner a:hover .dd-arrow,
 .nav-dropdown-inner a:focus-visible .dd-arrow {
