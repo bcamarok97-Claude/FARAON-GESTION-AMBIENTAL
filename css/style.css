@@ -105,14 +105,65 @@ p {
   font-weight: 500;
   color: var(--text-dim);
   margin-bottom: 26px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-color: rgba(147, 214, 87, 0.28);
+  box-shadow: 0 0 0 1px rgba(147, 214, 87, 0.04), 0 6px 22px -10px rgba(147, 214, 87, 0.45);
 }
+/* Brillo que recorre el cartel cada tanto */
+.pill-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgba(147, 214, 87, 0.16) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: pillSheen 5s ease-in-out 1.4s infinite;
+}
+/* Punto "En vivo": núcleo que late + dos ondas tipo radar */
 .pill-badge .dot {
-  width: 7px;
-  height: 7px;
+  position: relative;
+  width: 8px;
+  height: 8px;
+  margin: 0 3px 0 4px;
   border-radius: 50%;
-  background: var(--accent-light);
-  box-shadow: 0 0 10px 2px var(--glow);
+  background: radial-gradient(circle at 35% 30%, #effcd9, var(--accent-light) 55%, var(--accent) 100%);
+  box-shadow: 0 0 8px 2px var(--glow);
   flex-shrink: 0;
+  animation: liveBeat 2s ease-in-out infinite;
+}
+.pill-badge .dot::before,
+.pill-badge .dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-light);
+  animation: livePing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.pill-badge .dot::after {
+  animation-delay: 1s;
+}
+@keyframes liveBeat {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 6px 1px var(--glow); opacity: 1; }
+  50% { transform: scale(0.82); box-shadow: 0 0 14px 4px var(--glow); opacity: 0.75; }
+}
+@keyframes livePing {
+  0% { transform: scale(1); opacity: 0.85; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+@keyframes pillSheen {
+  0% { transform: translateX(-120%); }
+  45%, 100% { transform: translateX(120%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pill-badge::after,
+  .pill-badge .dot,
+  .pill-badge .dot::before,
+  .pill-badge .dot::after {
+    animation: none;
+  }
 }
 
 /* ---- Botones ---- */
