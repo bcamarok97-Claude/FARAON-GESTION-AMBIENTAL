@@ -1339,6 +1339,7 @@ a.card-more:hover {
 .svc-hero p {
   max-width: 560px;
   font-size: 16px;
+  text-wrap: pretty; /* evita que quede una palabra sola en la última línea */
 }
 .svc-hero .hero-actions {
   margin-top: 30px;
