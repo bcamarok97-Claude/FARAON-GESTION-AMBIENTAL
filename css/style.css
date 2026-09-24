@@ -1567,49 +1567,66 @@ a.card-more:hover {
     inset 0 2px 2px rgba(255, 255, 255, 0.55), inset 0 -7px 10px rgba(8, 19, 10, 0.35);
 }
 
-/* Conector entre un paso y el siguiente: se llena al aparecer y lleva flecha */
+/* Nodos centrados sobre cada tarjeta */
+.svc-step .step-node {
+  align-self: center;
+}
+.svc-step .step-body {
+  text-align: center;
+}
+
+/* Conector entre pasos: riel fino + punta de flecha tipo dardo.
+   Va del borde derecho de un nodo al borde izquierdo del siguiente. */
 .step-link {
   position: absolute;
   z-index: 1;
   top: calc(var(--node) / 2 - 1px);
-  left: calc(var(--node) + 14px);
-  right: calc(var(--gap) * -1 + 14px);
+  left: calc(50% + var(--node) / 2 + 12px);
+  right: calc(var(--node) / 2 - 50% - var(--gap) + 12px);
   height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
-  box-shadow: 0 0 10px rgba(147, 214, 87, 0.45);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 0.7s var(--ease-out) calc(0.35s + var(--i, 0) * 0.35s);
 }
-.step-link::before {
-  /* riel tenue de fondo, visible antes de que se llene */
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(147, 214, 87, 0.12);
-  z-index: -1;
-}
-.step-link::after {
-  /* punta de flecha */
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 9px;
-  height: 9px;
-  border-top: 2px solid var(--accent-light);
-  border-right: 2px solid var(--accent-light);
-  transform: translateY(-50%) rotate(45deg);
-  filter: drop-shadow(0 0 4px rgba(147, 214, 87, 0.8));
-}
 .svc-step.visible .step-link {
   transform: scaleX(1);
 }
-/* destello que recorre la línea marcando el sentido del proceso */
+/* riel: se ilumina hacia la punta */
+.step-link::before {
+  content: "";
+  position: absolute;
+  inset: 0 12px 0 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(147, 214, 87, 0.08), rgba(147, 214, 87, 0.55));
+}
+/* puntos de inicio del riel, junto al nodo */
+.step-link::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  box-shadow: 0 0 8px var(--glow);
+  transform: translate(-50%, -50%);
+}
+.step-arrow {
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  fill: var(--accent-light);
+  filter: drop-shadow(0 0 4px rgba(147, 214, 87, 0.75));
+  animation: stepArrow 4.8s ease-out infinite;
+  animation-delay: calc(2s + var(--i, 0) * 1.2s + 1s);
+}
+/* cometa: una sola luz que recorre 1 > 2 > 3 > 4 en secuencia.
+   Ciclo de 4,8s; cada tramo usa su franja de 1,2s. */
 .step-flow {
   position: absolute;
-  inset: -2px 10px -2px 0;
+  inset: -3px 12px -3px 0;
   overflow: hidden;
   border-radius: 4px;
 }
@@ -1618,16 +1635,41 @@ a.card-more:hover {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 40%;
-  background: linear-gradient(90deg, transparent, #f1ffe0, transparent);
-  filter: blur(1px);
-  transform: translateX(-120%);
-  animation: stepFlow 2.4s ease-in-out infinite;
-  animation-delay: calc(1.2s + var(--i, 0) * 0.35s);
+  left: 0;
+  width: 45%;
+  background: radial-gradient(ellipse at 70% 50%, #f6ffea 0%, rgba(201, 245, 146, 0.9) 22%, rgba(147, 214, 87, 0) 70%);
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: stepComet 4.8s linear infinite;
+  animation-delay: calc(2s + var(--i, 0) * 1.2s);
 }
-@keyframes stepFlow {
-  0% { transform: translateX(-120%); }
-  60%, 100% { transform: translateX(260%); }
+@keyframes stepComet {
+  0% { transform: translateX(-100%); opacity: 0; }
+  2% { opacity: 1; }
+  21% { opacity: 1; }
+  25% { transform: translateX(225%); opacity: 0; }
+  100% { transform: translateX(225%); opacity: 0; }
+}
+@keyframes stepArrow {
+  0% { filter: drop-shadow(0 0 10px rgba(201, 245, 146, 1)); transform: translateY(-50%) scale(1.35); }
+  12%, 100% { filter: drop-shadow(0 0 4px rgba(147, 214, 87, 0.75)); transform: translateY(-50%) scale(1); }
+}
+/* cada nodo se enciende cuando le llega la luz */
+.step-node::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-light);
+  opacity: 0;
+  pointer-events: none;
+  animation: stepNode 4.8s ease-out infinite;
+  animation-delay: calc(2s + var(--i, 0) * 1.2s);
+}
+@keyframes stepNode {
+  0% { opacity: 0.95; transform: scale(1); }
+  14% { opacity: 0; transform: scale(1.4); }
+  100% { opacity: 0; transform: scale(1.4); }
 }
 
 @media (max-width: 860px) {
@@ -1642,8 +1684,12 @@ a.card-more:hover {
     gap: 18px;
     align-items: start;
   }
-  .step-body {
+  .svc-step .step-body {
     margin-top: 0;
+    text-align: left;
+  }
+  .svc-step .step-node {
+    align-self: start;
   }
   /* en celular la línea baja vertical, de nodo a nodo */
   .step-link {
@@ -1653,35 +1699,49 @@ a.card-more:hover {
     right: auto;
     width: 2px;
     height: auto;
-    background: linear-gradient(180deg, var(--accent), var(--accent-light));
     transform: scaleY(0);
     transform-origin: center top;
   }
   .svc-step.visible .step-link {
     transform: scaleY(1);
   }
+  .step-link::before {
+    inset: 0 0 12px 0;
+    background: linear-gradient(180deg, rgba(147, 214, 87, 0.08), rgba(147, 214, 87, 0.55));
+  }
   .step-link::after {
-    right: 50%;
+    left: 50%;
+    top: -1px;
+  }
+  .step-arrow {
+    right: auto;
     top: auto;
-    bottom: 0;
-    transform: translateX(50%) rotate(135deg);
+    left: 50%;
+    bottom: -3px;
+    transform: translateX(-50%) rotate(90deg);
+    animation-name: stepArrowV;
+  }
+  @keyframes stepArrowV {
+    0% { filter: drop-shadow(0 0 10px rgba(201, 245, 146, 1)); transform: translateX(-50%) rotate(90deg) scale(1.35); }
+    12%, 100% { filter: drop-shadow(0 0 4px rgba(147, 214, 87, 0.75)); transform: translateX(-50%) rotate(90deg) scale(1); }
   }
   .step-flow {
-    inset: 0 -2px 10px -2px;
+    inset: 0 -3px 12px -3px;
   }
   .step-flow::before {
     width: auto;
-    height: 40%;
-    left: 0;
+    height: 45%;
     right: 0;
-    top: 0;
-    bottom: auto;
-    background: linear-gradient(180deg, transparent, #f1ffe0, transparent);
-    animation-name: stepFlowV;
+    background: radial-gradient(ellipse at 50% 70%, #f6ffea 0%, rgba(201, 245, 146, 0.9) 22%, rgba(147, 214, 87, 0) 70%);
+    transform: translateY(-100%);
+    animation-name: stepCometV;
   }
-  @keyframes stepFlowV {
-    0% { transform: translateY(-120%); }
-    60%, 100% { transform: translateY(260%); }
+  @keyframes stepCometV {
+    0% { transform: translateY(-100%); opacity: 0; }
+    2% { opacity: 1; }
+    21% { opacity: 1; }
+    25% { transform: translateY(225%); opacity: 0; }
+    100% { transform: translateY(225%); opacity: 0; }
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1689,9 +1749,10 @@ a.card-more:hover {
     transition: none;
     transform: none !important;
   }
-  .step-flow::before {
+  .step-flow::before,
+  .step-node::after,
+  .step-arrow {
     animation: none;
-    opacity: 0;
   }
 }
 
