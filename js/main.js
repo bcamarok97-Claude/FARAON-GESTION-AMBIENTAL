@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---- Desplegable de Servicios en el menú ----
   const SERVICES = [
-    ["recoleccion", "Recolección de RSU", '<path d="M9 2h6a1 1 0 0 1 1 1v1h3a1 1 0 1 1 0 2h-.6l-1.1 13.2A2 2 0 0 1 15.3 21H8.7a2 2 0 0 1-2-1.8L5.6 6H5a1 1 0 1 1 0-2h3V3a1 1 0 0 1 1-1Z"/><path d="M9 9v9M12 9v9M15 9v9" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round"/>'],
-    ["compactadoras", "Compactadoras fijas", '<path d="M4 9.5h16a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9.5a1 1 0 0 1 1-1Z"/><rect x="5.5" y="11.5" width="13" height="2.4" rx=".7" fill="rgba(8,19,10,.45)"/><path d="M7 17.2h10M7 19h10" stroke="rgba(8,19,10,.3)" stroke-width="1.2" stroke-linecap="round"/><path d="M12 2v5.2M9.4 4.8 12 7.4l2.6-2.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'],
-    ["roll-off", "Contenedores roll-off", '<path d="M3 8h18l-1.4 11.2A2 2 0 0 1 17.6 21H6.4a2 2 0 0 1-2-1.8L3 8Z"/><path d="M2 8h20" stroke="rgba(8,19,10,.4)" stroke-width="1.6"/><path d="M6 6l1-2h10l1 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'],
-    ["volquetes", "Alquiler de volquetes", '<path d="M3 9h18l-1.5 9.4A2 2 0 0 1 17.5 20h-11a2 2 0 0 1-2-1.6L3 9Z"/><path d="M2 9h20" stroke="rgba(8,19,10,.4)" stroke-width="1.6"/><path d="M18 4l3 2.2-1.6 2.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 4v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'],
-    ["poda", "Poda y espacios verdes", '<path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16Z"/><path d="M7 17 17 7" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round" fill="none"/>'],
-    ["depositos", "Contenedores urbanos", '<rect x="10" y="2" width="4" height="4" rx="1"/><rect x="10" y="5" width="4" height="12" rx="1" fill="rgba(8,19,10,.25)"/><path d="M6 9a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2Z"/><path d="M9 12v6M12 12v6M15 12v6" stroke="rgba(8,19,10,.35)" stroke-width="1.3" stroke-linecap="round"/>'],
+    ["recoleccion-rsu.html", "Recolección de RSU", '<path d="M9 2h6a1 1 0 0 1 1 1v1h3a1 1 0 1 1 0 2h-.6l-1.1 13.2A2 2 0 0 1 15.3 21H8.7a2 2 0 0 1-2-1.8L5.6 6H5a1 1 0 1 1 0-2h3V3a1 1 0 0 1 1-1Z"/><path d="M9 9v9M12 9v9M15 9v9" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round"/>'],
+    ["compactadoras-fijas.html", "Compactadoras fijas", '<path d="M4 9.5h16a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9.5a1 1 0 0 1 1-1Z"/><rect x="5.5" y="11.5" width="13" height="2.4" rx=".7" fill="rgba(8,19,10,.45)"/><path d="M7 17.2h10M7 19h10" stroke="rgba(8,19,10,.3)" stroke-width="1.2" stroke-linecap="round"/><path d="M12 2v5.2M9.4 4.8 12 7.4l2.6-2.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'],
+    ["contenedores-roll-off.html", "Contenedores roll-off", '<path d="M3 8h18l-1.4 11.2A2 2 0 0 1 17.6 21H6.4a2 2 0 0 1-2-1.8L3 8Z"/><path d="M2 8h20" stroke="rgba(8,19,10,.4)" stroke-width="1.6"/><path d="M6 6l1-2h10l1 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'],
+    ["alquiler-volquetes.html", "Alquiler de volquetes", '<path d="M3 9h18l-1.5 9.4A2 2 0 0 1 17.5 20h-11a2 2 0 0 1-2-1.6L3 9Z"/><path d="M2 9h20" stroke="rgba(8,19,10,.4)" stroke-width="1.6"/><path d="M18 4l3 2.2-1.6 2.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 4v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'],
+    ["poda-espacios-verdes.html", "Poda y espacios verdes", '<path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16Z"/><path d="M7 17 17 7" stroke="rgba(8,19,10,.35)" stroke-width="1.4" stroke-linecap="round" fill="none"/>'],
+    ["contenedores-urbanos.html", "Contenedores urbanos", '<rect x="10" y="2" width="4" height="4" rx="1"/><rect x="10" y="5" width="4" height="12" rx="1" fill="rgba(8,19,10,.25)"/><path d="M6 9a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2Z"/><path d="M9 12v6M12 12v6M15 12v6" stroke="rgba(8,19,10,.35)" stroke-width="1.3" stroke-linecap="round"/>'],
   ];
   const servLink = document.querySelector('.main-nav a[href="servicios.html"]');
   if (servLink) {
@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
       '<div class="nav-dropdown-inner">' +
       '<div class="nav-dropdown-label">Nuestros servicios</div>' +
       SERVICES.map(
-        ([id, title, icon], i) =>
-          '<a href="servicios.html#' + id + '" style="--d:' + i + '">' +
+        ([page, title, icon], i) =>
+          '<a href="' + page + '"' + (location.pathname.endsWith("/" + page) ? ' aria-current="page"' : "") + ' style="--d:' + i + '">' +
           '<span class="dd-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">' + icon + "</svg></span>" +
           '<span class="dd-title">' + title + "</span>" +
           '<span class="dd-num">' + String(i + 1).padStart(2, "0") + "</span>" +

@@ -914,13 +914,18 @@ footer p {
     align-items: flex-start;
     padding: 24px;
     gap: 4px;
-    transform: translateX(100%);
-    transition: transform 0.25s ease;
+    /* se oculta recortándolo en su lugar (no corriéndolo fuera de pantalla),
+       así no agranda el ancho de la página en celulares */
+    clip-path: inset(0 0 0 100%);
+    visibility: hidden;
+    transition: clip-path 0.3s var(--ease-out), visibility 0s linear 0.3s;
     border-top: 1px solid var(--border);
     overflow-y: auto;
   }
   .main-nav.open {
-    transform: translateX(0);
+    clip-path: inset(0 0 0 0);
+    visibility: visible;
+    transition: clip-path 0.3s var(--ease-out), visibility 0s;
   }
   .main-nav a {
     width: 100%;
@@ -1282,6 +1287,317 @@ body.home .alt {
   }
   .leaf-divider.on .ld-leaf,
   .leaf-divider.on .ld-emblem {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   Páginas individuales de cada servicio
+   ============================================================ */
+/* Cards y bloques que llevan a la página del servicio */
+a.service-card {
+  display: flex;
+  flex-direction: column;
+}
+a.service-card p {
+  flex: 1;
+}
+.card-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-light);
+}
+.card-more svg {
+  transition: transform 0.25s var(--ease-out);
+}
+a.service-card:hover .card-more svg,
+a.card-more:hover svg {
+  transform: translateX(4px);
+}
+a.card-more:hover {
+  color: var(--text);
+}
+
+/* Hero del servicio */
+.svc-hero {
+  padding: 64px 0 72px;
+}
+.svc-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+}
+.svc-hero h1 {
+  font-size: clamp(32px, 4.8vw, 52px);
+  max-width: 680px;
+}
+.svc-hero p {
+  max-width: 560px;
+  font-size: 16px;
+}
+.svc-hero .hero-actions {
+  margin-top: 30px;
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-faint);
+  margin-bottom: 22px;
+}
+.breadcrumb a {
+  color: var(--text-dim);
+  transition: color 0.15s ease;
+}
+.breadcrumb a:hover {
+  color: var(--accent-light);
+}
+.breadcrumb span {
+  opacity: 0.5;
+}
+.svc-hero-art {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+.svc-hero-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(147, 214, 87, 0.3);
+  animation: waRingSpin 40s linear infinite;
+}
+.svc-hero-ring.r2 {
+  inset: 34px;
+  border: 1px solid rgba(147, 214, 87, 0.14);
+  background: radial-gradient(circle, rgba(63, 164, 70, 0.18), transparent 70%);
+  animation: none;
+}
+.svc-hero-badge {
+  position: relative;
+  width: 118px;
+  height: 118px;
+  border-radius: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #08130a;
+  background: radial-gradient(circle at 30% 22%, #e9fccd, var(--accent-light) 40%, var(--accent) 78%, var(--accent-dark) 120%);
+  box-shadow: 0 26px 50px -16px rgba(63, 164, 70, 0.7), inset 0 2px 2px rgba(255, 255, 255, 0.55),
+    inset 0 -8px 14px rgba(8, 19, 10, 0.3);
+  transform: rotate(-6deg);
+  animation: svcFloat 6s ease-in-out infinite;
+}
+.svc-hero-badge::after {
+  content: "";
+  position: absolute;
+  inset: 3px 8px auto;
+  height: 45%;
+  border-radius: 30px 30px 40px 40px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
+}
+.svc-hero-badge svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 0 rgba(255, 255, 255, 0.3));
+}
+@keyframes svcFloat {
+  0%, 100% { transform: rotate(-6deg) translateY(0); }
+  50% { transform: rotate(-3deg) translateY(-10px); }
+}
+
+/* Qué incluye */
+.svc-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.svc-feature {
+  display: flex;
+  gap: 18px;
+  padding: 26px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  transition: border-color 0.25s ease;
+}
+.svc-feature:hover {
+  border-color: var(--accent);
+}
+.svc-feature h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.svc-feature p {
+  font-size: 14.5px;
+}
+.svc-feature-check {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-light);
+  background: var(--accent-soft);
+  border: 1px solid rgba(147, 214, 87, 0.25);
+}
+
+/* Para quién es */
+.svc-audience {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: center;
+}
+.svc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.svc-tag {
+  padding: 11px 20px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-strong);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.svc-tag:hover {
+  border-color: var(--accent-light);
+  color: var(--accent-light);
+  background: var(--accent-soft);
+}
+
+/* Cómo trabajamos */
+.svc-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  counter-reset: step;
+}
+.svc-step {
+  position: relative;
+  padding: 26px 22px;
+  border-top: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(63, 164, 70, 0.07), transparent 70%);
+}
+.svc-step-num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-light);
+  margin-bottom: 14px;
+}
+.svc-step h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.svc-step p {
+  font-size: 14px;
+}
+
+/* Resto de los servicios (solo títulos) */
+.svc-others {
+  padding-top: 80px;
+}
+.svc-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.svc-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text-dim);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.25s var(--ease-out);
+}
+.svc-tile-title {
+  flex: 1;
+}
+.svc-tile-arrow {
+  display: flex;
+  color: var(--accent-light);
+  opacity: 0.5;
+  transition: opacity 0.2s ease, transform 0.25s var(--ease-out);
+}
+a.svc-tile:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+a.svc-tile:hover .svc-tile-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+a.svc-tile:hover .dd-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+.svc-tile.current {
+  border-color: rgba(147, 214, 87, 0.45);
+  color: var(--text);
+  background: linear-gradient(135deg, rgba(63, 164, 70, 0.14), transparent);
+}
+.svc-tile-here {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent-light);
+}
+.nav-dropdown-inner a[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+@media (max-width: 860px) {
+  .svc-hero-grid,
+  .svc-audience {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .svc-hero-art {
+    display: none;
+  }
+  .svc-features,
+  .svc-tiles {
+    grid-template-columns: 1fr;
+  }
+  .svc-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 520px) {
+  .svc-steps {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .svc-hero-ring,
+  .svc-hero-badge {
     animation: none;
   }
 }
