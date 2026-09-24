@@ -414,7 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   waFloat.innerHTML =
     '<span class="wa-pulse"></span><span class="wa-pulse wa-pulse-2"></span>' + leavesSvg + '<span class="wa-ring"></span>' +
-    '<span class="wa-core">' + WHATSAPP_ICON_SVG(26) + "</span>";
+    '<span class="wa-core">' + WHATSAPP_ICON_SVG(17) + "</span>";
   document.body.appendChild(waFloat);
 
   // ---- Brillo que sigue el cursor en las cards de servicio ----
